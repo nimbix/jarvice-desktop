@@ -1,5 +1,7 @@
 # Jarvice Desktop
 
+![Portal ScreenShot](portal-screenshot.png)
+
 Setup an Xfce4 desktop into application image to launch it as an 
 interactive desktop into Jarvice portal.
 
