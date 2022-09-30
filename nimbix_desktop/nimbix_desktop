@@ -27,6 +27,7 @@ else
 startxfce4 >>/tmp/xfce4.log 2>&1 &
 exec $@
 EOF
+fi
 
 xfrun_desktop="xfrun4.desktop"
 [ ! -e /etc/redhat-release ] && xfrun_desktop="xfce4-run.desktop"
