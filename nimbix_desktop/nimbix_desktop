@@ -34,6 +34,11 @@ xfrun_desktop="xfrun4.desktop"
 app_menu_dir=$HOME/.config/menus
 app_menu=$app_menu_dir/xfce-applications.menu
 mkdir -p $app_menu_dir
+
+source /etc/os-release
+
+if [[ "$ID_LIKE" == *"rhel"* ]]; then # EL based system
+    if [[ "${VERSION_ID:0:1}" == "7" ]] || [[ "${VERSION_ID:0:1}" == "8" ]]; then
 cat >$app_menu <<EOF
 <!DOCTYPE Menu PUBLIC "-//freedesktop//DTD Menu 1.0//EN"
   "http://www.freedesktop.org/standards/menu-spec/1.0/menu.dtd">
@@ -58,6 +63,61 @@ cat >$app_menu <<EOF
 
 </Menu>
 EOF
+    fi
+elif [[ "$ID" == *"ubuntu"* ]]; then # Ubuntu based system
+    if [[ "$VERSION_ID" == "18.04" ]] || [[ "$VERSION_ID" == "20.04" ]]; then
+cat >$app_menu <<EOF
+<!DOCTYPE Menu PUBLIC "-//freedesktop//DTD Menu 1.0//EN"
+  "http://www.freedesktop.org/standards/menu-spec/1.0/menu.dtd">
+
+<Menu>
+    <Name>Xfce</Name>
+
+    <DefaultAppDirs/>
+    <DefaultDirectoryDirs/>
+    <DefaultMergeDirs/>
+
+    <Include>
+        <Category>X-Xfce-Toplevel</Category>
+    </Include>
+
+    <Layout>
+        <Filename>$xfrun_desktop</Filename>
+        <Separator/>
+        <Filename>exo-terminal-emulator.desktop</Filename>
+        <Filename>exo-file-manager.desktop</Filename>
+    </Layout>
+
+</Menu>
+EOF
+    elif [[ "$VERSION_ID" == "22.04" ]]; then
+cat >$app_menu <<EOF
+<!DOCTYPE Menu PUBLIC "-//freedesktop//DTD Menu 1.0//EN"
+  "http://www.freedesktop.org/standards/menu-spec/1.0/menu.dtd">
+
+<Menu>
+    <Name>Xfce</Name>
+
+    <DefaultAppDirs/>
+    <DefaultDirectoryDirs/>
+    <DefaultMergeDirs/>
+
+    <Include>
+        <Category>X-Xfce-Toplevel</Category>
+    </Include>
+
+    <Layout>
+        <Filename>$xfrun_desktop</Filename>
+        <Separator/>
+        <Filename>xfce4-terminal-emulator.desktop</Filename>
+        <Filename>xfce4-file-manager.desktop</Filename>
+    </Layout>
+
+</Menu>
+EOF
+    fi
+fi
+
 
 ## Fix a missing machine-id file for Dbus
 #[[ -e /usr/bin/dbus-uuidgen ]] && dbus-uuidgen | tee /etc/machine-id
