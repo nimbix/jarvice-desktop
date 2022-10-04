@@ -4,7 +4,7 @@ set -e
 set -x
 
 ARCH=$(arch)
-BRANCH=jar5582
+BRANCH=master
 
 while [ $# -gt 0 ]; do
   case $1 in
