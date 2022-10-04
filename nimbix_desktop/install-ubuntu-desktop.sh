@@ -23,6 +23,7 @@ if [ "$VERSION_ID" == "22.04" ]; then
 fi
 
 apt-get -y install $PKGS --no-install-recommends
+apt-get -y remove light-locker
 
 if [[ "$ARCH" != "x86_64" ]]; then
     echo "non-x86_64 has no VirtualGL"
