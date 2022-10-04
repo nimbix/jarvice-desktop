@@ -39,7 +39,6 @@ source /etc/os-release
 
 if [[ "$ID_LIKE" == *"rhel"* ]]; then # EL based system
     if [[ "${VERSION_ID:0:1}" == "7" ]] || [[ "${VERSION_ID:0:1}" == "8" ]]; then
-sed -i "s|^exec|xconf-query -c xfce4-desktop -p /backdrop/screen0/monitor0/workspace0/last-image -s /usr/share/backgrounds/xfce/xfce-blue.jpg; exec|" $xinitrc
 cat >$app_menu <<EOF
 <!DOCTYPE Menu PUBLIC "-//freedesktop//DTD Menu 1.0//EN"
   "http://www.freedesktop.org/standards/menu-spec/1.0/menu.dtd">
