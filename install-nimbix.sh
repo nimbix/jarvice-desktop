@@ -4,7 +4,7 @@ set -e
 set -x
 
 ARCH=$(arch)
-BRANCH=master
+BRANCH=fixs_1
 
 while [ $# -gt 0 ]; do
   case $1 in
@@ -90,7 +90,7 @@ function setup_base_os() {
       # Update cache
       apt-get -y update
       # Install packages
-      apt-get -y install $PKGS --no-install-recommends
+      apt-get -y install $PKGS #--no-install-recommends
 
       locale-gen en_US.UTF-8
       update-locale LANG=en_US.UTF-8
