@@ -208,6 +208,11 @@ for filename in /usr/share/backgrounds/xfce/*.jpg; do
     rm -f $filename
     cp /usr/local/lib/nimbix_desktop/share/backgrounds/Nimix_Desktop.jpg $filename
 done
+
+rm -f /etc/xdg/autostart/xfce4-screensaver.desktop
+rm -f /etc/xdg/autostart/xscreensaver.desktop
+rm -f /etc/xdg/autostart/light-locker.desktop
+
 }
 
 setup_base_os
