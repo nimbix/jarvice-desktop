@@ -213,6 +213,9 @@ rm -f /etc/xdg/autostart/xfce4-screensaver.desktop
 rm -f /etc/xdg/autostart/xscreensaver.desktop
 rm -f /etc/xdg/autostart/light-locker.desktop
 
+rm -f /usr/bin/xfce4-screensaver
+echo -e '#!/bin/sh\nexit 0' > /usr/bin/xfce4-screensaver
+
 }
 
 setup_base_os
