@@ -90,7 +90,7 @@ function setup_base_os() {
       # Update cache
       apt-get -y update
       # Install packages
-      apt-get -y install $PKGS --no-install-recommends
+      apt-get -y install $PKGS #--no-install-recommends
 
       locale-gen en_US.UTF-8
       update-locale LANG=en_US.UTF-8
@@ -208,6 +208,14 @@ for filename in /usr/share/backgrounds/xfce/*.jpg; do
     rm -f $filename
     cp /usr/local/lib/nimbix_desktop/share/backgrounds/Nimix_Desktop.jpg $filename
 done
+
+rm -f /etc/xdg/autostart/xfce4-screensaver.desktop
+rm -f /etc/xdg/autostart/xscreensaver.desktop
+rm -f /etc/xdg/autostart/light-locker.desktop
+
+rm -f /usr/bin/xfce4-screensaver
+echo -e '#!/bin/sh\nexit 0' > /usr/bin/xfce4-screensaver
+
 }
 
 setup_base_os

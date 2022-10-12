@@ -9,9 +9,13 @@ sh -c "echo app_mode=$app_mode >>$nimbix_desktop"
 xinitrc=/tmp/xinitrc
 cat >$xinitrc <<EOF
 #!/bin/bash -l
+set -x
 if [ -x /usr/bin/xscreensaver-command ]; then
   (sleep 5; /usr/bin/xscreensaver-command -exit) &
 fi
+
+xset s off -dpms >> /tmp/xfce4.log
+
 echo "">>/tmp/xfce4.log
 echo "=============================================" >>/tmp/xfce4.log
 date >>/tmp/xfce4.log
