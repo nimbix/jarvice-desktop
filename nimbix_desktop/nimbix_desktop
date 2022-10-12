@@ -14,9 +14,7 @@ if [ -x /usr/bin/xscreensaver-command ]; then
   (sleep 5; /usr/bin/xscreensaver-command -exit) &
 fi
 
-xset s off -dpms
-
-xset s off -dpms >> /tmp/xset.log
+xset s off -dpms >> /tmp/xfce4.log
 
 echo "">>/tmp/xfce4.log
 echo "=============================================" >>/tmp/xfce4.log

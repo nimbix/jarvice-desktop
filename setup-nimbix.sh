@@ -29,3 +29,6 @@ alias ll="ls -alh"
 export PS1="\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ "
 EOF
 fi
+
+# Ensure a PS1 is set if bashrc already exist
+cat /home/nimbix/.bashrc | grep PS1 || echo 'export PS1="\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ "' >> /home/nimbix/.bashrc
