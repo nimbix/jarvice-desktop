@@ -222,6 +222,14 @@ setup_base_os
 setup_jarvice_emulation
 setup_nimbix_desktop
 tune_nimbix_desktop
+echo "####################### COUCOU"
+echo "####################### COUCOU"
+echo "####################### COUCOU"
+/usr/local/lib/nimbix_desktop/install-tiger.sh
+echo "####################### COUCOU"
+echo "####################### COUCOU"
+echo "####################### COUCOU"
+echo "####################### COUCOU"
 cleanup
 
 exit 0

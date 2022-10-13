@@ -25,20 +25,11 @@ if [ -d /etc/X11/fontpath.d ]; then
     FP="-fp catalogue:/etc/X11/fontpath.d,built-ins"
 fi
 
-# Start the VNC server
-RET=1 && (vnclicense -check >/dev/null 2>&1) && RET=$?
-
-    # Install Tiger from local tarball or package
-    /usr/local/lib/nimbix_desktop/install-tiger.sh
-    export PATH=/opt/JARVICE/tigervnc/usr/bin/:$PATH
-    export LD_LIBRARY_PATH=/opt/JARVICE/tigervnc/usr/lib64:$LD_LIBRARY_PATH
-#    mkdir /tmp/.X11-unix
-#    chmod -R 777 /tmp/.X11-unix
-    # Start the Tiger server
-    /opt/JARVICE/tigervnc/usr/bin/vncserver -geometry "$VNC_GEOMETRY" \
-        -rfbauth /etc/JARVICE/vncpasswd \
-        -dpi 100 \
-        -SecurityTypes=VeNCrypt,TLSVnc,VncAuth :1
+# Start the Tiger server
+vncserver -geometry "$VNC_GEOMETRY" \
+    -rfbauth /etc/JARVICE/vncpasswd \
+    -dpi 100 \
+    -SecurityTypes=VeNCrypt,TLSVnc,VncAuth :1
 
 export DISPLAY=:1
 export LANG=en_US.UTF-8 # XXX
