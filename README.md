@@ -21,7 +21,7 @@ Just add this to the end of your Dockerfile:
 # Ubuntu
 ```bash
 RUN apt-get -y update && \
-    DEBIAN_FRONTEND=noninteractive apt-get -y install curl --no-install-recommends && \
+    DEBIAN_FRONTEND=noninteractive apt-get -y install ca-certificates curl --no-install-recommends && \
     curl -H 'Cache-Control: no-cache' \
         https://raw.githubusercontent.com/nimbix/jarvice-desktop/master/install-nimbix.sh \
         | bash
@@ -29,7 +29,8 @@ RUN apt-get -y update && \
 
 # RHEL likes
 ```bash
-RUN curl -H 'Cache-Control: no-cache' \
+RUN yum install -y ca-certificates && \
+    curl -H 'Cache-Control: no-cache' \
         https://raw.githubusercontent.com/nimbix/jarvice-desktop/master/install-nimbix.sh \
         | bash
 ```
