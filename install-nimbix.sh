@@ -3,7 +3,7 @@
 set -e
 
 ARCH=$(arch)
-BRANCH=fixs_1
+BRANCH=master
 
 while [ $# -gt 0 ]; do
   case $1 in
