@@ -123,14 +123,7 @@ EOF
     fi
 fi
 
-
-## Fix a missing machine-id file for Dbus
-#[[ -e /usr/bin/dbus-uuidgen ]] && dbus-uuidgen | tee /etc/machine-id
-
 tools=/usr/lib/JARVICE/tools
-#[[ -f /etc/init.d/messagebus ]] && SVC=messagebus || SVC=dbus
-#service $SVC start
-DISPLAY=:1 dbus-launch
 
 while [ 1 ]; do
 #    $tools/sbin/init $tools/bin/vncstart.sh $xinitrc
