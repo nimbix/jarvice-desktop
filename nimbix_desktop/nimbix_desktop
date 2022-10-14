@@ -1,5 +1,5 @@
 #!/bin/bash
-# tag 2.5
+# tag 2.6
 set -x
 app_mode=
 [ -n "$1" ] && app_mode=y
