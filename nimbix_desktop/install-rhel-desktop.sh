@@ -26,7 +26,7 @@ elif [[ "${VERSION_ID:0:1}" == "8" ]]; then
        xorg-x11-fonts-ISO8859-1-100dpi xorg-x11-fonts-ISO8859-1-75dpi \
        xkeyboard-config xterm xcb-util xcb-util-keysyms xorg-x11-utils \
        net-tools glx-utils ImageMagick-devel firefox \
-       ristretto xterm python3-numpy python3-gobject python3-pip --nobest
+       ristretto xterm python3-numpy python3-gobject python3-pip $RIS
     # Remove power manager to prevent pannel plugin crash at startup
     dnf -y remove xfce4-power-manager
 fi
@@ -34,12 +34,6 @@ fi
 if [ "$ARCH" != "x86_64" ]; then
     echo "non-x86_64 has no VirtualGL"
 else
-
-    # Fix newer installs that put binary in /usr/libexec
-#    if [[ -x /usr/libexec/vncserver ]]; then
-#      ln -sf /usr/libexec/vncserver /usr/bin/vncserver
-#    fi
-
     cd /tmp
     wget --content-disposition "$VGL64"
     wget --content-disposition "$VGL32"
