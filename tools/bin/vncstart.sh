@@ -28,9 +28,9 @@ fi
 
 # parameterization permitted from container caller
 # assumes runtime endpoint will translate port in URL (from 5902 for example)
-DISPLAY=${JARVICE_VNC_DISPLAY:1}
+DISPLAY=${JARVICE_VNC_DISPLAY:-1}
 let VNCPORT=5900+$DISPLAY
-PORTNUM=${JARVICE_NOVNC_PORT:5902}
+PORTNUM=${JARVICE_NOVNC_PORT:-5902}
 
 # Start the Tiger server
 vncserver -geometry "$VNC_GEOMETRY" \
