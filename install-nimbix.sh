@@ -9,27 +9,22 @@ while [ $# -gt 0 ]; do
   case $1 in
   --skip-os-pkg-update)
     export SKIP_OS_PKG_UPDATE=1
-    shift
     ;;
   --jarvice-desktop-branch)
     BRANCH=$2
     shift
-    shift
     ;;
   --verbose)
     export VERBOSE=true
-    shift
-    shift
     ;;
   --reduce-image-size)
     export RIS=true
-    shift
-    shift
     ;;
   *)
     break
     ;;
   esac
+  shift
 done
 
 if [ "$VERBOSE" = true ]; then
