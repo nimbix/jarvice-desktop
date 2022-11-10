@@ -46,7 +46,7 @@ export VGL_READBACK=sync
 # Start noVNC daemon
 NOVNC_PATH=/usr/local/JARVICE/tools/noVNC
 pushd "$NOVNC_PATH"
-(utils/launch.sh /usr/local/etc/cert.pem --listen ${PORTNUM} --vnc localhost:${VNCPORT} | tee /tmp/novnc.log &) #2>&1 &)
+(utils/launch.sh --listen ${PORTNUM} --vnc localhost:${VNCPORT} | tee /tmp/novnc.log &) #2>&1 &)
 popd
 
 # Create links to the vault mounted at /data
