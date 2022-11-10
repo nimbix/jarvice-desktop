@@ -1,9 +1,10 @@
 #!/usr/bin/env bash
 set -x
-. /etc/JARVICE/vglinfo.sh
+[ -f /etc/JARVICE/vglinfo.sh ] && . /etc/JARVICE/vglinfo.sh || true
 if [ ! -x /usr/bin/vglrun ]; then
     export VGL_DISPLAY=""
 fi
+VNC_GEOMETRY=${VNC_GEOMETRY:-1600x900}
 
 cd
 
@@ -25,13 +26,19 @@ if [ -d /etc/X11/fontpath.d ]; then
     FP="-fp catalogue:/etc/X11/fontpath.d,built-ins"
 fi
 
+# parameterization permitted from container caller
+# assumes runtime endpoint will translate port in URL (from 5902 for example)
+DISPLAY=${JARVICE_VNC_DISPLAY:1}
+let VNCPORT=5900+$DISPLAY
+PORTNUM=${JARVICE_NOVNC_PORT:5902}
+
 # Start the Tiger server
 vncserver -geometry "$VNC_GEOMETRY" \
     -rfbauth /etc/JARVICE/vncpasswd \
     -dpi 100 \
-    -SecurityTypes=VeNCrypt,TLSVnc,VncAuth :1
+    -SecurityTypes=VeNCrypt,TLSVnc,VncAuth :${DISPLAY}
 
-export DISPLAY=:1
+export DISPLAY=:${DISPLAY}
 export LANG=en_US.UTF-8 # XXX
 export TERM=xterm
 export VGL_READBACK=sync
@@ -39,8 +46,7 @@ export VGL_READBACK=sync
 # Start noVNC daemon
 NOVNC_PATH=/usr/local/JARVICE/tools/noVNC
 pushd "$NOVNC_PATH"
-(utils/launch.sh --cert /etc/JARVICE/cert.pem --listen 5902 --vnc localhost:5901 | tee /tmp/novnc.log &) #2>&1 &)
-echo "$NOVNC_PATH" | tee /etc/.novnc-stable
+(utils/launch.sh /usr/local/etc/cert.pem --listen ${PORTNUM} --vnc localhost:${VNCPORT} | tee /tmp/novnc.log &) #2>&1 &)
 popd
 
 # Create links to the vault mounted at /data
