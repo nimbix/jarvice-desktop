@@ -163,13 +163,13 @@ function setup_jarvice_emulation() {
   rm -f nimbix.zip
   /tmp/jarvice-desktop-$BRANCH/setup-nimbix.sh
 
-  # Redundant directory copies, use a soft link, favor the /usr/local/ but
-  #  J2 depends on this so allow the full copies for now
-  mkdir -p /usr/lib/JARVICE
-  cp -a /tmp/jarvice-desktop-$BRANCH/tools /usr/lib/JARVICE
   mkdir -p /usr/local/JARVICE
   cp -a /tmp/jarvice-desktop-$BRANCH/tools /usr/local/JARVICE
-  #    ln -sf /usr/local/JARVICE /usr/lib/JARVICE
+
+  # allow init to write in here for path-based ingress, etc.
+  chmod 01777 /usr/local/JARVICE/tools/noVNC
+
+  ln -sf /usr/local/JARVICE /usr/lib/JARVICE
   cat <<'EOF' | tee /etc/profile.d/jarvice-tools.sh >/dev/null
 JARVICE_TOOLS="/usr/local/JARVICE/tools"
 JARVICE_TOOLS_BIN="$JARVICE_TOOLS/bin"
