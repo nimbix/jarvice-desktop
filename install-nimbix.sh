@@ -254,6 +254,7 @@ function cleanup() {
     apt-get clean
   fi
   rm -rf /tmp/jarvice-desktop-$BRANCH
+  rm -rf /data /scratch
 }
 
 function tune_nimbix_desktop() {
@@ -288,7 +289,7 @@ function tune_nimbix_desktop() {
 }
 
 setup_base_os
-setup_jarvice_emulation
+# setup_jarvice_emulation       # not compatible with v2 apps!
 setup_nimbix_desktop
 tune_nimbix_desktop
 cleanup
