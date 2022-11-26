@@ -33,15 +33,16 @@ PORTNUM=${JARVICE_SERVICE_PORT:-5902}
 # Start the Tiger server
 if [ -n "${JARVICE_SERVICE_PORT}" ]; then
 
-    # if a service port is specified, assume we are in a host network
-    # namespace and don't bind TCP from Xvnc (only Unix)
-    NOLISTEN="-nolisten tcp"
+    # if a service port is specified, assume we are in a host network namespace
+    # and don't bind TCP RFB port from Xvnc (only Unix)
+    NOLISTEN="-rfbport -1"
 else
     NOLISTEN=""
 fi
 
 vncserver -geometry "$VNC_GEOMETRY" \
     -rfbauth /etc/JARVICE/vncpasswd $NOLISTEN \
+    -nolisten tcp \
     -rfbunixpath /tmp/.vncsocket \
     -dpi 100 \
     -SecurityTypes=VeNCrypt,TLSVnc,VncAuth :1
