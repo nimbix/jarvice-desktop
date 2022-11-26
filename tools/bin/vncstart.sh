@@ -28,17 +28,17 @@ fi
 
 # parameterization permitted from container caller
 # assumes runtime endpoint will translate port in URL (from 5902 for example)
-DISPLAY=${JARVICE_VNC_DISPLAY:-1}
-let VNCPORT=5900+$DISPLAY
-PORTNUM=${JARVICE_NOVNC_PORT:-5902}
+PORTNUM=${JARVICE_SERVICE_PORT:-5902}
 
 # Start the Tiger server
 vncserver -geometry "$VNC_GEOMETRY" \
     -rfbauth /etc/JARVICE/vncpasswd \
+    -nolisten tcp \
+    -rfbunixpath /tmp/.vncsocket \
     -dpi 100 \
-    -SecurityTypes=VeNCrypt,TLSVnc,VncAuth :${DISPLAY}
+    -SecurityTypes=VeNCrypt,TLSVnc,VncAuth :1
 
-export DISPLAY=:${DISPLAY}
+export DISPLAY=:1
 export LANG=en_US.UTF-8 # XXX
 export TERM=xterm
 export VGL_READBACK=sync
@@ -46,7 +46,7 @@ export VGL_READBACK=sync
 # Start noVNC daemon
 NOVNC_PATH=/usr/local/JARVICE/tools/noVNC
 pushd "$NOVNC_PATH"
-(utils/launch.sh --listen ${PORTNUM} --vnc localhost:${VNCPORT} | tee /tmp/novnc.log &) #2>&1 &)
+(utils/websockify/run --web "$NOVNC_PATH" --unix-target=/tmp/.vncsocket ${PORTNUM} | tee /tmp/novnc.log &) #2>&1 &)
 popd
 
 # Create links to the vault mounted at /data
