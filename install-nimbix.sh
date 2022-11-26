@@ -156,15 +156,15 @@ function setup_jarvice_emulation() {
     >/tmp/nimbix.zip
   unzip nimbix.zip
   rm -f nimbix.zip
-  /tmp/jarvice-desktop-$BRANCH/setup-nimbix.sh
+  # /tmp/jarvice-desktop-$BRANCH/setup-nimbix.sh    # not compatible with v2
 
-  # Redundant directory copies, use a soft link, favor the /usr/local/ but
-  #  J2 depends on this so allow the full copies for now
-  mkdir -p /usr/lib/JARVICE
-  cp -a /tmp/jarvice-desktop-$BRANCH/tools /usr/lib/JARVICE
   mkdir -p /usr/local/JARVICE
   cp -a /tmp/jarvice-desktop-$BRANCH/tools /usr/local/JARVICE
-  #    ln -sf /usr/local/JARVICE /usr/lib/JARVICE
+
+  # allow init to write in here for path-based ingress, etc.
+  chmod 01777 /usr/local/JARVICE/tools/noVNC
+
+  ln -sf /usr/local/JARVICE /usr/lib/JARVICE
   cat <<'EOF' | tee /etc/profile.d/jarvice-tools.sh >/dev/null
 JARVICE_TOOLS="/usr/local/JARVICE/tools"
 JARVICE_TOOLS_BIN="$JARVICE_TOOLS/bin"
@@ -176,8 +176,10 @@ EOF
   mkdir -p /etc/JARVICE
   cp -a /tmp/jarvice-desktop-"$BRANCH"/etc/* /etc/JARVICE
   chmod 755 /etc/JARVICE
-  mkdir -m 0755 /data
-  chown nimbix:nimbix /data
+
+  # mkdir -m 0755 /data
+  # chown nimbix:nimbix /data
+  # ^^^ not compatible with v2 ^^^
 }
 
 function setup_nimbix_desktop() {
@@ -226,8 +228,9 @@ function setup_nimbix_desktop() {
   ln -sf /usr/local/lib/nimbix_desktop/ /usr/lib/JARVICE/tools/nimbix_desktop
 
   # recreate nimbix user home to get the right skeleton files
-  /bin/rm -rf /home/nimbix
-  /sbin/mkhomedir_helper nimbix
+  # /bin/rm -rf /home/nimbix
+  # /sbin/mkhomedir_helper nimbix
+  # ^^^ not compatible with v2
 
   # Add a marker file for using a local, updated noVNC install
   echo /usr/local/JARVICE/tools/noVNC | tee /etc/.novnc-stable
@@ -249,6 +252,7 @@ function cleanup() {
     apt-get clean
   fi
   rm -rf /tmp/jarvice-desktop-$BRANCH
+  rm -rf /data /scratch
 }
 
 function tune_nimbix_desktop() {
