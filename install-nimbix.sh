@@ -233,8 +233,9 @@ function setup_nimbix_desktop() {
   ln -sf /usr/local/lib/nimbix_desktop/ /usr/lib/JARVICE/tools/nimbix_desktop
 
   # recreate nimbix user home to get the right skeleton files
-  /bin/rm -rf /home/nimbix
-  /sbin/mkhomedir_helper nimbix
+  # /bin/rm -rf /home/nimbix
+  # /sbin/mkhomedir_helper nimbix
+  # ^^^ not compatible with v2
 
   # Add a marker file for using a local, updated noVNC install
   echo /usr/local/JARVICE/tools/noVNC | tee /etc/.novnc-stable
