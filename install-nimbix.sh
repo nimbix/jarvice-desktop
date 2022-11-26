@@ -161,7 +161,7 @@ function setup_jarvice_emulation() {
     >/tmp/nimbix.zip
   unzip nimbix.zip
   rm -f nimbix.zip
-  /tmp/jarvice-desktop-$BRANCH/setup-nimbix.sh
+  # /tmp/jarvice-desktop-$BRANCH/setup-nimbix.sh    # not compatible with v2
 
   mkdir -p /usr/local/JARVICE
   cp -a /tmp/jarvice-desktop-$BRANCH/tools /usr/local/JARVICE
@@ -181,8 +181,10 @@ EOF
   mkdir -p /etc/JARVICE
   cp -a /tmp/jarvice-desktop-"$BRANCH"/etc/* /etc/JARVICE
   chmod 755 /etc/JARVICE
-  mkdir -m 0755 /data
-  chown nimbix:nimbix /data
+
+  # mkdir -m 0755 /data
+  # chown nimbix:nimbix /data
+  # ^^^ not compatible with v2 ^^^
 }
 
 function setup_nimbix_desktop() {
@@ -289,7 +291,7 @@ function tune_nimbix_desktop() {
 }
 
 setup_base_os
-# setup_jarvice_emulation       # not compatible with v2 apps!
+setup_jarvice_emulation
 setup_nimbix_desktop
 tune_nimbix_desktop
 cleanup
