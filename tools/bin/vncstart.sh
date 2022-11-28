@@ -35,14 +35,13 @@ if [ -n "${JARVICE_SERVICE_PORT}" ]; then
 
     # if a service port is specified, assume we are in a host network namespace
     # and don't bind TCP RFB port from Xvnc (only Unix)
-    NOLISTEN="-rfbport -1 -nolisten tcp"
+    NOLISTEN="-rfbport -1 -nolisten tcp -rfbunixpath /tmp/.vncsocket"
 else
     NOLISTEN=""
 fi
 
 vncserver -geometry "$VNC_GEOMETRY" \
     -rfbauth /etc/JARVICE/vncpasswd $NOLISTEN \
-    -rfbunixpath /tmp/.vncsocket \
     -dpi 100 \
     -SecurityTypes=VeNCrypt,TLSVnc,VncAuth :1
 
@@ -54,7 +53,11 @@ export VGL_READBACK=sync
 # Start noVNC daemon
 NOVNC_PATH=/usr/local/JARVICE/tools/noVNC
 pushd "$NOVNC_PATH"
-(utils/websockify/run --web "$NOVNC_PATH" --unix-target=/tmp/.vncsocket ${PORTNUM} | tee /tmp/novnc.log &) #2>&1 &)
+if [ -n "$NOLISTEN" ]; then
+    (utils/websockify/run --web "$NOVNC_PATH" --unix-target=/tmp/.vncsocket ${PORTNUM} | tee /tmp/novnc.log &) #2>&1 &)
+else
+    (utils/websockify/run --web "$NOVNC_PATH" ${PORTNUM} 127.0.0.1:5901 | tee /tmp/novnc.log &) #2>&1 &)
+fi
 popd
 
 # Create links to the vault mounted at /data
