@@ -24,7 +24,7 @@ done
 # VGL libraries as non-root
 for i in libdlfaker.so libgefaker.so libvglfaker-nodl.so libvglfaker-opencl.so libvglfaker.so; do
     for j in lib lib32 lib64; do
-        [ -d $j ] && (touch $j/$i && chmod 0777 $j/$i) || true
+        [ -d /usr/$j ] && (touch /usr/$j/$i && chmod 0777 /usr/$j/$i) || true
     done
 done
 
