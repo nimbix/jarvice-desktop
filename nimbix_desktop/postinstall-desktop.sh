@@ -20,6 +20,14 @@ for i in vglclient vglconfig vglconnect vglgenkey vgllogin vglrun; do
     ln -sf /opt/VirtualGL/bin/$i /usr/bin/$i
 done
 
+# create empty libs that are world-writable so that init can replace with
+# VGL libraries as non-root
+for i in libdlfaker.so libgefaker.so libvglfaker-nodl.so libvglfaker-opencl.so libvglfaker.so; do
+    for j in lib lib32 lib64; do
+        [ -d $j ] && (touch $j/$i && chmod 0777 $j/$i) || true
+    done
+done
+
 mkdir -p /etc/NAE
 if [ ! -e /etc/NAE/url.txt ]; then
     echo 'https://%PUBLICADDR%:5902/vnc.html?password=%NIMBIXPASSWD%&autoconnect=true&reconnect=true' >/etc/NAE/url.txt
