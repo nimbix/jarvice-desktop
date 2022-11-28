@@ -3,11 +3,6 @@
 ARCH=$(arch)
 source /etc/os-release
 
-## Adding a safe download backup since SourceForge goes offline frequently
-VGL64VER=2.6.5
-VGL64="https://storage.googleapis.com/app_archive/virtualgl/VirtualGL-${VGL64VER}.x86_64.rpm"
-VGL32="https://storage.googleapis.com/app_archive/virtualgl/VirtualGL-${VGL64VER}.i386.rpm"
-
 dirname=$(dirname "$0")
 
 # Required packages, varies depending of version id
@@ -29,16 +24,6 @@ elif [[ "${VERSION_ID:0:1}" == "8" ]]; then
        ristretto xterm python3-numpy python3-gobject python3-pip $RIS
     # Remove power manager to prevent pannel plugin crash at startup
     dnf -y remove xfce4-power-manager
-fi
-
-if [ "$ARCH" != "x86_64" ]; then
-    echo "non-x86_64 has no VirtualGL"
-else
-    cd /tmp
-    wget --content-disposition "$VGL64"
-    wget --content-disposition "$VGL32"
-    yum -y install VirtualGL*.rpm || yum -y update VirtualGL*.rpm
-    rm -f VirtualGL*.rpm
 fi
 
 yum clean all

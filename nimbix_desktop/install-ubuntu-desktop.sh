@@ -3,10 +3,6 @@
 ARCH=$(arch)
 source /etc/os-release
 
-# Adding a safe download backup since SourceForge goes offline frequently
-VGL64VER=2.6.5
-#VGL64="https://downloads.sourceforge.net/project/virtualgl/$VGL64VER/virtualgl_${VGL64VER}_amd64.deb"
-VGL64="https://storage.googleapis.com/app_archive/virtualgl/virtualgl_${VGL64VER}_amd64.deb"
 dirname=$(dirname $0)
 
 export DEBIAN_FRONTEND=noninteractive
@@ -24,15 +20,6 @@ fi
 
 apt-get -y install $PKGS $RIS
 apt-get -y remove light-locker
-
-if [[ "$ARCH" != "x86_64" ]]; then
-    echo "non-x86_64 has no VirtualGL"
-else
-    cd /tmp
-    wget --content-disposition "$VGL64"
-    dpkg --install virtualgl*.deb || apt-get -f install
-    rm -f virtualgl*.deb
-fi
 
 PY2=$(python -V 2>&1 |grep "^Python 2" || true)
 if [[ -n "$PY2" ]]; then
