@@ -1,6 +1,6 @@
 #!/bin/bash
 # tag 2.6
-set -x
+
 app_mode=
 [ -n "$1" ] && app_mode=y
 
@@ -10,7 +10,7 @@ sh -c "echo app_mode=$app_mode >>$nimbix_desktop"
 xinitrc=/tmp/xinitrc
 cat >$xinitrc <<EOF
 #!/bin/bash -l
-set -x
+
 if [ -x /usr/bin/xscreensaver-command ]; then
   (sleep 5; /usr/bin/xscreensaver-command -exit) &
 fi
