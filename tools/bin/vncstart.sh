@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -x
+
 [ -f /etc/JARVICE/vglinfo.sh ] && . /etc/JARVICE/vglinfo.sh || true
 if [ ! -x /usr/bin/vglrun ]; then
     export VGL_DISPLAY=""
