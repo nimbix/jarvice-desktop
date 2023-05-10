@@ -1,6 +1,8 @@
 #!/bin/bash
 # tag 2.6
 
+tune_desktop=true
+
 app_mode=
 [ -n "$1" ] && app_mode=y
 
@@ -33,6 +35,8 @@ startxfce4 >>/tmp/xfce4.log 2>&1 &
 exec $@
 EOF
 fi
+
+if [ "$tune_desktop" == "true" ] # Should we live tune desktop?
 
 xfrun_desktop="xfrun4.desktop"
 [ ! -e /etc/redhat-release ] && xfrun_desktop="xfce4-run.desktop"
@@ -122,6 +126,8 @@ cat >$app_menu <<EOF
 EOF
     fi
 fi
+
+fi # End desktop tuning
 
 tools=/usr/lib/JARVICE/tools
 

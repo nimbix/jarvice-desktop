@@ -4,6 +4,7 @@ set -e
 
 ARCH=$(arch)
 BRANCH=master
+TUNE_DESKTOP=true
 
 while [ $# -gt 0 ]; do
   case $1 in
@@ -19,6 +20,9 @@ while [ $# -gt 0 ]; do
     ;;
   --reduce-image-size)
     export RIS=true
+    ;;
+  --no-desktop-tuning)
+    export TUNE_DESKTOP=false
     ;;
   *)
     break
@@ -291,5 +295,10 @@ setup_jarvice_emulation
 setup_nimbix_desktop
 tune_nimbix_desktop
 cleanup
+
+# Prevent desktop tuning, to be hardcoded in final start script
+if [ "$TUNE_DESKTOP" == "false" ]; then
+  sed -i 's/tune_desktop=true/tune_desktop=false/' /usr/local/bin/nimbix_desktop
+fi
 
 exit 0
