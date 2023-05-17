@@ -36,18 +36,18 @@ exec $@
 EOF
 fi
 
-if [ "$tune_desktop" == "true" ] # Should we live tune desktop?
+if [[ "$tune_desktop" == "true" ]]; then # Should we live tune desktop?
 
-xfrun_desktop="xfrun4.desktop"
-[ ! -e /etc/redhat-release ] && xfrun_desktop="xfce4-run.desktop"
-app_menu_dir=$HOME/.config/menus
-app_menu=$app_menu_dir/xfce-applications.menu
-mkdir -p $app_menu_dir
+    xfrun_desktop="xfrun4.desktop"
+    [ ! -e /etc/redhat-release ] && xfrun_desktop="xfce4-run.desktop"
+    app_menu_dir=$HOME/.config/menus
+    app_menu=$app_menu_dir/xfce-applications.menu
+    mkdir -p $app_menu_dir
 
-source /etc/os-release
+    source /etc/os-release
 
-if [[ "$ID_LIKE" == *"rhel"* ]]; then # EL based system
-    if [[ "${VERSION_ID:0:1}" == "7" ]] || [[ "${VERSION_ID:0:1}" == "8" ]]; then
+    if [[ "$ID_LIKE" == *"rhel"* ]]; then # EL based system
+        if [[ "${VERSION_ID:0:1}" == "7" ]] || [[ "${VERSION_ID:0:1}" == "8" ]]; then
 cat >$app_menu <<EOF
 <!DOCTYPE Menu PUBLIC "-//freedesktop//DTD Menu 1.0//EN"
   "http://www.freedesktop.org/standards/menu-spec/1.0/menu.dtd">
@@ -72,9 +72,9 @@ cat >$app_menu <<EOF
 
 </Menu>
 EOF
-    fi
-elif [[ "$ID" == *"ubuntu"* ]]; then # Ubuntu based system
-    if [[ "$VERSION_ID" == "18.04" ]] || [[ "$VERSION_ID" == "20.04" ]]; then
+        fi
+    elif [[ "$ID" == *"ubuntu"* ]]; then # Ubuntu based system
+        if [[ "$VERSION_ID" == "18.04" ]] || [[ "$VERSION_ID" == "20.04" ]]; then
 cat >$app_menu <<EOF
 <!DOCTYPE Menu PUBLIC "-//freedesktop//DTD Menu 1.0//EN"
   "http://www.freedesktop.org/standards/menu-spec/1.0/menu.dtd">
@@ -99,7 +99,7 @@ cat >$app_menu <<EOF
 
 </Menu>
 EOF
-    elif [[ "$VERSION_ID" == "22.04" ]]; then
+        elif [[ "$VERSION_ID" == "22.04" ]]; then
 cat >$app_menu <<EOF
 <!DOCTYPE Menu PUBLIC "-//freedesktop//DTD Menu 1.0//EN"
   "http://www.freedesktop.org/standards/menu-spec/1.0/menu.dtd">
@@ -124,8 +124,8 @@ cat >$app_menu <<EOF
 
 </Menu>
 EOF
+        fi
     fi
-fi
 
 fi # End desktop tuning
 
@@ -145,4 +145,3 @@ while [ 1 ]; do
     vncserver -kill :1
     sleep 1
 done
-
