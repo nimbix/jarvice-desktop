@@ -62,7 +62,7 @@ sleep 1
     if [ "$RIS" = true ]; then
       export RIS="--nobest"
     fi
-    if [[ "${VERSION_ID:0:1}" == "7" ]] || [[ "${VERSION_ID:0:1}" == "8" ]]; then # Supported EL version
+    if [[ "${VERSION_ID:0:1}" == "7" ]] || [[ "${VERSION_ID:0:1}" == "8" ]] || [[ "${VERSION_ID:0:1}" == "9" ]]; then # Supported EL version
       echo -e "\e[1;33mINFO : RHEL derivated detected\e[0m"
       yum install wget -y
       if [[ "${VERSION_ID:0:1}" == "7" ]]; then
