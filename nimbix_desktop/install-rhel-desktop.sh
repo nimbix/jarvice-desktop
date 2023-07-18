@@ -8,17 +8,18 @@ dirname=$(dirname "$0")
 # Required packages, varies depending of version id
 if [[ "${VERSION_ID:0:1}" == "7" ]]; then
     yum -y groupinstall Xfce
-    yum -y install perl wget xauth pygtk2 gnome-icon-theme  \
+    yum -y install perl wget xauth gnome-icon-theme  \
        xorg-x11-fonts-Type1 xorg-x11-fonts-misc xorg-x11-fonts-75dpi xorg-x11-fonts-100dpi \
        xorg-x11-fonts-ISO8859-1-100dpi xorg-x11-fonts-ISO8859-1-75dpi \
        xkeyboard-config xorg-x11-apps xcb-util xcb-util-keysyms xorg-x11-utils \
-       net-tools glx-utils ImageMagick-devel firefox xorg-x11-apps \
+       net-tools glx-utils ImageMagick-devel firefox  \
        ristretto xterm numpy python36-numpy python36-gobject python-pip
 elif [[ "${VERSION_ID:0:1}" == "8" ]] || [[ "${VERSION_ID:0:1}" == "9" ]]; then
     dnf install 'dnf-command(config-manager)' -y
     dnf install dnf-plugins-core -y
     if [[ "${VERSION_ID:0:1}" == "8" ]]; then
         dnf config-manager --set-enabled powertools
+        dnf install -y xorg-x11-apps pygtk2
     elif [[ "${VERSION_ID:0:1}" == "9" ]]; then
         dnf config-manager --set-enabled crb
     fi
