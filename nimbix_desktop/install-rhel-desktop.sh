@@ -14,7 +14,7 @@ if [[ "${VERSION_ID:0:1}" == "7" ]]; then
        xkeyboard-config xorg-x11-apps xcb-util xcb-util-keysyms xorg-x11-utils \
        net-tools glx-utils ImageMagick-devel firefox xorg-x11-apps \
        ristretto xterm numpy python36-numpy python36-gobject python-pip
-elif [[ "${VERSION_ID:0:1}" == "8" ]]; then
+elif [[ "${VERSION_ID:0:1}" == "8" ]] || [[ "${VERSION_ID:0:1}" == "9" ]]; then
     dnf install 'dnf-command(config-manager)' -y
     dnf install dnf-plugins-core -y
     dnf config-manager --set-enabled powertools
