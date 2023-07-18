@@ -72,6 +72,7 @@ sleep 1
         wget https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
         dnf -y install epel-release-latest-8.noarch.rpm
       elif [[ "${VERSION_ID:0:1}" == "9" ]]; then 
+        dnf install curl --allowerasing -y
         wget https://dl.fedoraproject.org/pub/epel/epel-release-latest-9.noarch.rpm
         dnf -y install epel-release-latest-9.noarch.rpm
       fi

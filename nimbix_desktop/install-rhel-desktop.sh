@@ -17,7 +17,11 @@ if [[ "${VERSION_ID:0:1}" == "7" ]]; then
 elif [[ "${VERSION_ID:0:1}" == "8" ]] || [[ "${VERSION_ID:0:1}" == "9" ]]; then
     dnf install 'dnf-command(config-manager)' -y
     dnf install dnf-plugins-core -y
-    dnf config-manager --set-enabled powertools
+    if [[ "${VERSION_ID:0:1}" == "8" ]]; then
+        dnf config-manager --set-enabled powertools
+    elif [[ "${VERSION_ID:0:1}" == "9" ]]; then
+        dnf config-manager --set-enabled crb
+    fi
     dnf -y groupinstall Xfce --nobest
     dnf -y install perl wget xauth pygtk2 adwaita-icon-theme  \
        xorg-x11-fonts-Type1 xorg-x11-fonts-misc xorg-x11-fonts-75dpi xorg-x11-fonts-100dpi \
