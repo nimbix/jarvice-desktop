@@ -25,24 +25,11 @@ apt-get -y install $PKGS $RIS
 apt-get -y remove light-locker
 
 if [ "$VERSION_ID" == "22.04" ]; then
-    snap remove firefox
-    add-apt-repository ppa:mozillateam/ppa
-    mkdir -p /etc/apt/preferences.d
-    cat << EOF > /etc/apt/preferences.d/mozillateamppa
-Package: firefox*
-Pin: release o=Ubuntu*
-Pin-Priority: -1
-
-Package: *
-Pin: release o=LP-PPA-mozillateam
-Pin-Priority: 200
-EOF
-    mkdir -p /etc/apt/apt.conf.d/
-    cat << EOF > /etc/apt/apt.conf.d/51unattended-upgrades-firefox
-Unattended-Upgrade::Allowed-Origins:: "LP-PPA-mozillateam:${distro_codename}";
-EOF
-    apt-get update && apt-get install firefox -y
-
+    wget "https://download.mozilla.org/?product=firefox-latest-ssl&os=linux64&lang=en-US" -O firefox.tar.bz2
+    tar xjvf firefox.tar.bz2 -C /
+    mkdir -p /etc/profile.d/
+    echo 'export "PATH=$PATH:/firefox/"' > /etc/profile.d/firefox.sh
+    rm -f firefox.tar.bz2
 fi
 
 PY2=$(python -V 2>&1 |grep "^Python 2" || true)
