@@ -62,7 +62,7 @@ sleep 1
     if [ "$RIS" = true ]; then
       export RIS="--nobest"
     fi
-    if [[ "${VERSION_ID:0:1}" == "7" ]] || [[ "${VERSION_ID:0:1}" == "8" ]]; then # Supported EL version
+    if [[ "${VERSION_ID:0:1}" == "7" ]] || [[ "${VERSION_ID:0:1}" == "8" ]] || [[ "${VERSION_ID:0:1}" == "9" ]]; then # Supported EL version
       echo -e "\e[1;33mINFO : RHEL derivated detected\e[0m"
       yum install wget -y
       if [[ "${VERSION_ID:0:1}" == "7" ]]; then
@@ -71,6 +71,10 @@ sleep 1
       elif [[ "${VERSION_ID:0:1}" == "8" ]]; then 
         wget https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
         dnf -y install epel-release-latest-8.noarch.rpm
+      elif [[ "${VERSION_ID:0:1}" == "9" ]]; then 
+        dnf install curl --allowerasing -y
+        wget https://dl.fedoraproject.org/pub/epel/epel-release-latest-9.noarch.rpm
+        dnf -y install epel-release-latest-9.noarch.rpm
       fi
 
       # Packages to support MPI and basic container operation
@@ -82,13 +86,13 @@ sleep 1
       # Install packages
       if [[ "${VERSION_ID:0:1}" == "7" ]]; then
         yum -y install $PKGS
-      elif [[ "${VERSION_ID:0:1}" == "8" ]]; then 
+      elif [[ "${VERSION_ID:0:1}" == "8" ]] || [[ "${VERSION_ID:0:1}" == "9" ]]; then 
         dnf -y install $PKGS $RIS
       fi
 
       # EL 8 images have locals natively manually removed !!
       # We need to force reinstall packages to ensure files are present to build locals.
-      if [[ "${VERSION_ID:0:1}" == "8" ]]; then
+      if [[ "${VERSION_ID:0:1}" == "8" ]] || [[ "${VERSION_ID:0:1}" == "9" ]]; then
         dnf -y install glibc-langpack-en glibc-common glibc-locale-source gzip
         dnf -y reinstall glibc-langpack-en glibc-common glibc-locale-source gzip
       fi
