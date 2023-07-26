@@ -22,6 +22,7 @@ elif [[ "${VERSION_ID:0:1}" == "8" ]] || [[ "${VERSION_ID:0:1}" == "9" ]]; then
         dnf install -y xorg-x11-apps pygtk2
     elif [[ "${VERSION_ID:0:1}" == "9" ]]; then
         dnf config-manager --set-enabled crb
+        dnf install dbus-x11 -y
     fi
     dnf -y groupinstall Xfce --nobest
     dnf -y install perl wget xauth adwaita-icon-theme  \
