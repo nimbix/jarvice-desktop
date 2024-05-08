@@ -19,7 +19,7 @@ elif [[ "${VERSION_ID:0:1}" == "8" ]] || [[ "${VERSION_ID:0:1}" == "9" ]]; then
     dnf install dnf-plugins-core -y
     if [[ "${VERSION_ID:0:1}" == "8" ]]; then
         dnf config-manager --set-enabled powertools
-        dnf install -y xorg-x11-apps pygtk2
+        dnf install -y xorg-x11-apps pygtk2 ImageMagick-devel
     elif [[ "${VERSION_ID:0:1}" == "9" ]]; then
         dnf config-manager --set-enabled crb
         dnf install dbus-x11 -y
@@ -29,7 +29,7 @@ elif [[ "${VERSION_ID:0:1}" == "8" ]] || [[ "${VERSION_ID:0:1}" == "9" ]]; then
        xorg-x11-fonts-Type1 xorg-x11-fonts-misc xorg-x11-fonts-75dpi xorg-x11-fonts-100dpi \
        xorg-x11-fonts-ISO8859-1-100dpi xorg-x11-fonts-ISO8859-1-75dpi \
        xkeyboard-config xterm xcb-util xcb-util-keysyms xorg-x11-utils \
-       net-tools glx-utils ImageMagick-devel firefox \
+       net-tools glx-utils firefox \
        ristretto xterm python3-numpy python3-gobject python3-pip libGLU $RIS
     # Remove power manager to prevent pannel plugin crash at startup
     dnf -y remove xfce4-power-manager
