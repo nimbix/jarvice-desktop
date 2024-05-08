@@ -12,17 +12,17 @@ if [[ "${VERSION_ID:0:1}" == "7" ]]; then
        xorg-x11-fonts-Type1 xorg-x11-fonts-misc xorg-x11-fonts-75dpi xorg-x11-fonts-100dpi \
        xorg-x11-fonts-ISO8859-1-100dpi xorg-x11-fonts-ISO8859-1-75dpi \
        xkeyboard-config xorg-x11-apps xcb-util xcb-util-keysyms xorg-x11-utils \
-       net-tools glx-utils ImageMagick-devel firefox  \
+       net-tools glx-utils firefox  \
        ristretto xterm numpy python36-numpy python36-gobject python-pip
 elif [[ "${VERSION_ID:0:1}" == "8" ]] || [[ "${VERSION_ID:0:1}" == "9" ]]; then
     dnf install 'dnf-command(config-manager)' -y
     dnf install dnf-plugins-core -y
     if [[ "${VERSION_ID:0:1}" == "8" ]]; then
         dnf config-manager --set-enabled powertools
-        dnf install -y xorg-x11-apps pygtk2 ImageMagick-devel
+        dnf install -y xorg-x11-apps pygtk2
     elif [[ "${VERSION_ID:0:1}" == "9" ]]; then
         dnf config-manager --set-enabled crb
-        dnf install dbus-x11 -y
+        dnf install dbus-x11 xwd -y
     fi
     dnf -y groupinstall Xfce --nobest
     dnf -y install perl wget xauth adwaita-icon-theme  \
