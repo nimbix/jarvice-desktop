@@ -40,7 +40,7 @@ fi
 echo -e "\e[1;34m     _  _   _____   _____ ___ ___   ___  ___ ___ _  _______ ___  ___ "
 echo -e "\e[1;34m  _ | |/_\\ | _ \\ \\ / /_ _/ __| __| |   \\| __/ __| |/ /_   _/ _ \\| _ \\"
 echo -e "\e[1;34m | || / _ \\|   /\\ V / | | (__| _|  | |) | _|\\__ \\ ' <  | || (_) |  _/"
-echo -e "\e[1;34m  \\__/_/ \\_\\_|_\\ \\_/ |___\\___|___| |___/|___|___/_|\\_\\ |_| \\___/|_|  "                                                                
+echo -e "\e[1;34m  \\__/_/ \\_\\_|_\\ \\_/ |___\\___|___| |___/|___|___/_|\\_\\ |_| \\___/|_|  "
 sleep 3
 
 # Base OS
@@ -68,10 +68,10 @@ sleep 1
       if [[ "${VERSION_ID:0:1}" == "7" ]]; then
         wget https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
         yum -y install epel-release-latest-7.noarch.rpm
-      elif [[ "${VERSION_ID:0:1}" == "8" ]]; then 
+      elif [[ "${VERSION_ID:0:1}" == "8" ]]; then
         wget https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
         dnf -y install epel-release-latest-8.noarch.rpm
-      elif [[ "${VERSION_ID:0:1}" == "9" ]]; then 
+      elif [[ "${VERSION_ID:0:1}" == "9" ]]; then
         dnf install curl --allowerasing -y
         wget https://dl.fedoraproject.org/pub/epel/epel-release-latest-9.noarch.rpm
         dnf -y install epel-release-latest-9.noarch.rpm
@@ -86,7 +86,7 @@ sleep 1
       # Install packages
       if [[ "${VERSION_ID:0:1}" == "7" ]]; then
         yum -y install $PKGS
-      elif [[ "${VERSION_ID:0:1}" == "8" ]] || [[ "${VERSION_ID:0:1}" == "9" ]]; then 
+      elif [[ "${VERSION_ID:0:1}" == "8" ]] || [[ "${VERSION_ID:0:1}" == "9" ]]; then
         dnf -y install $PKGS $RIS
       fi
 
@@ -111,7 +111,8 @@ sleep 1
     if [ "$RIS" = true ]; then
       export RIS="--no-install-recommends"
     fi
-    if [[ "$VERSION_ID" == "18.04" ]] || [[ "$VERSION_ID" == "20.04" ]] || [[ "$VERSION_ID" == "22.04" ]]; then # Supported versions
+    UBUNTU_VERSIONS="18.04 20.04 22.04 24.04"
+    if [[ $UBUNTU_VERSIONS =~ $VERSION_ID ]]; then
       echo -e "\e[1;33mINFO : Ubuntu derivated detected\e[0m"
 
       # Prevent interactive packages locks
@@ -121,7 +122,9 @@ sleep 1
       PKGS+=" iptables build-essential byacc flex git cmake"
       PKGS+=" screen grep locales locales-all net-tools lsb-release"
       PKGS+=" openssh-client sshpass ca-certificates"
-      if [ "$VERSION_ID" == "20.04" ]; then
+
+      PY_IS_PY3_VER="20.04 22.04 24.04"
+      if [[ $PY_IS_PY3_VER =~ $VERSION_ID ]]; then
         PKGS+=" python-is-python3"
       fi
 

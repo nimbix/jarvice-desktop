@@ -17,14 +17,14 @@ PKGS="wget gnome-icon-theme software-properties-common \
 if [ "$VERSION_ID" == "20.04" ] || [ "$VERSION_ID" == "18.04" ]; then
     PKGS+=" firefox"
 fi
-if [ "$VERSION_ID" == "22.04" ]; then
-    PKGS+=" libxtst6"
+if [ "$VERSION_ID" == "24.04" ] || [ "$VERSION_ID" == "22.04" ]; then
+    PKGS+=" libxtst6 bzip2"
 fi
 
 apt-get -y install $PKGS $RIS
 apt-get -y remove light-locker
 
-if [ "$VERSION_ID" == "22.04" ]; then
+if [ "$VERSION_ID" == "24.04" ] || [ "$VERSION_ID" == "22.04" ]; then
     wget "https://download.mozilla.org/?product=firefox-latest-ssl&os=linux64&lang=en-US" -O firefox.tar.bz2
     tar xjvf firefox.tar.bz2 -C /
     mkdir -p /etc/profile.d/
