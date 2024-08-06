@@ -21,6 +21,10 @@ if [ "$VERSION_ID" == "24.04" ] || [ "$VERSION_ID" == "22.04" ]; then
     PKGS+=" libxtst6 bzip2"
 fi
 
+if [ "$VERSION_ID" == "24.04" ]; then
+    PKGS+=" dbus-x11"
+fi
+
 apt-get -y install $PKGS $RIS
 apt-get -y remove light-locker
 
