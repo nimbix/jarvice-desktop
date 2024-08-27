@@ -13,7 +13,7 @@ cat > /usr/local/JARVICE/tools/nimbix-panel.txt <<EOF
       <property name="position" type="string" value="p=8;x=960;y=1061"/>
       <property name="length" type="uint" value="100"/>
       <property name="position-locked" type="bool" value="true"/>
-      <property name="icon-size" type="uint" value="16"/>
+      <property name="icon-size" type="uint" value="36"/>
       <property name="size" type="uint" value="36"/>
       <property name="plugin-ids" type="array">
         <value type="int" value="1"/>
