@@ -172,7 +172,7 @@ function setup_jarvice_emulation() {
     >/tmp/nimbix.zip
   unzip nimbix.zip
   rm -f nimbix.zip
-  /tmp/jarvice-desktop-$BRANCH/setup-nimbix.sh    # not compatible with v2
+  # /tmp/jarvice-desktop-$BRANCH/setup-nimbix.sh    # not compatible with v2
 
   mkdir -p /usr/local/JARVICE
   cp -a /tmp/jarvice-desktop-$BRANCH/tools /usr/local/JARVICE
