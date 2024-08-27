@@ -32,14 +32,13 @@ elif [[ "${VERSION_ID:0:1}" == "8" ]] || [[ "${VERSION_ID:0:1}" == "9" ]]; then
        net-tools glx-utils ImageMagick-devel \
        ristretto xterm python3-numpy python3-gobject python3-pip libGLU bzip2 $RIS
     # Remove power manager to prevent pannel plugin crash at startup
-    dnf -y remove xfce4-power-manager
+    dnf -y remove xfce4-power-manager firefox
+    wget "https://download.mozilla.org/?product=firefox-latest-ssl&os=linux64&lang=en-US" -O firefox.tar.bz2
+    tar xjvf firefox.tar.bz2 -C /
+    mkdir -p /etc/profile.d/
+    echo 'export "PATH=$PATH:/firefox/"' > /etc/profile.d/firefox.sh
+    rm -f firefox.tar.bz2
 fi
-
-wget "https://download.mozilla.org/?product=firefox-latest-ssl&os=linux64&lang=en-US" -O firefox.tar.bz2
-tar xjvf firefox.tar.bz2 -C /
-mkdir -p /etc/profile.d/
-echo 'export "PATH=$PATH:/firefox/"' > /etc/profile.d/firefox.sh
-rm -f firefox.tar.bz2
 
 yum clean all
 
