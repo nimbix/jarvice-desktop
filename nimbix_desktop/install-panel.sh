@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+mkdir -p /usr/local/JARVICE/tools
 cat > /usr/local/JARVICE/tools/nimbix-panel.txt <<EOF
 <?xml version="1.0" encoding="UTF-8"?>
 
