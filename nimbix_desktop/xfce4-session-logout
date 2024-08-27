@@ -1,4 +1,9 @@
 #!/usr/bin/env python3
+# #!/usr/bin/env bash
+
+# kill $(pidof Xvnc)
+
+
 
 # Replacement menu dialog for exiting the desktop
 # SIGTERM for a Jarvice init, halt for a systemd
@@ -14,8 +19,8 @@ from gi.repository import Gtk
 # Using both methods to hopefully get the result on any setup
 def on_shutdown(button):
     print("Exit requested, calling shutdown")
-    os.system('/usr/bin/sudo kill -s TERM 1')
-    os.system('/usr/bin/sudo halt --force')
+    cmd="kill $(pidof Xvnc)"
+    os.system(cmd)
 
 
 def on_cancel(button):

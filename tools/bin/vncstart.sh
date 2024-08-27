@@ -21,6 +21,7 @@ xsetroot -solid "#000050"
 xhost +
 EOF
 chmod +x .vnc/xstartup
+# chmod 775 .vnc/xstartup
 
 if [ -d /etc/X11/fontpath.d ]; then
     FP="-fp catalogue:/etc/X11/fontpath.d,built-ins"

@@ -47,7 +47,7 @@ if [[ "$tune_desktop" == "true" ]]; then # Should we live tune desktop?
     source /etc/os-release
 
     if [[ "$ID_LIKE" == *"rhel"* ]]; then # EL based system
-        if [[ "${VERSION_ID:0:1}" == "7" ]] || [[ "${VERSION_ID:0:1}" == "8" ]]; then
+        if [[ "${VERSION_ID:0:1}" == "7" ]]; then
 cat >$app_menu <<EOF
 <!DOCTYPE Menu PUBLIC "-//freedesktop//DTD Menu 1.0//EN"
   "http://www.freedesktop.org/standards/menu-spec/1.0/menu.dtd">
@@ -72,6 +72,75 @@ cat >$app_menu <<EOF
 
 </Menu>
 EOF
+        elif [[ "${VERSION_ID:0:1}" == "8" || "${VERSION_ID:0:1}" == "9" ]]; then
+            # RHEL 8 uses the same xml as ubuntu 22.04+
+            cat >$app_menu <<EOF
+<!DOCTYPE Menu PUBLIC "-//freedesktop//DTD Menu 1.0//EN"
+  "http://www.freedesktop.org/standards/menu-spec/1.0/menu.dtd">
+
+<Menu>
+    <Name>Xfce</Name>
+
+    <DefaultAppDirs/>
+    <DefaultDirectoryDirs/>
+    <DefaultMergeDirs/>
+
+    <Include>
+        <Category>X-Xfce-Toplevel</Category>
+    </Include>
+
+    <Layout>
+        <Filename>$xfrun_desktop</Filename>
+        <Separator/>
+        <Filename>xfce4-terminal-emulator.desktop</Filename>
+        <Filename>xfce4-file-manager.desktop</Filename>
+        <Filename>xfce4-web-browser.desktop</Filename>
+        <Filename>xfce4-session-logout.desktop</Filename>
+    </Layout>
+
+</Menu>
+EOF
+
+            # Rocky 9 uses a different file for the background Just add our own xml
+            if [[ "${VERSION_ID:0:1}" == "9" ]]; then
+                mkdir -p "$HOME/.config/xfce4/xfconf/xfce-perchannel-xml"
+                cat > "$HOME/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-desktop.xml" << EOF
+<?xml version="1.0" encoding="UTF-8"?>
+
+<channel name="xfce4-desktop" version="1.0">
+  <property name="backdrop" type="empty">
+    <property name="screen0" type="empty">
+      <property name="monitorVNC-0" type="empty">
+        <property name="workspace0" type="empty">
+          <property name="color-style" type="int" value="0"/>
+          <property name="image-style" type="int" value="5"/>
+          <property name="last-image" type="string" value="/usr/share/backgrounds/images/default.png"/>
+        </property>
+        <property name="workspace1" type="empty">
+          <property name="color-style" type="int" value="0"/>
+          <property name="image-style" type="int" value="5"/>
+          <property name="last-image" type="string" value="/usr/share/backgrounds/images/default.png"/>
+        </property>
+        <property name="workspace2" type="empty">
+          <property name="color-style" type="int" value="0"/>
+          <property name="image-style" type="int" value="5"/>
+          <property name="last-image" type="string" value="/usr/share/backgrounds/images/default.png"/>
+        </property>
+        <property name="workspace3" type="empty">
+          <property name="color-style" type="int" value="0"/>
+          <property name="image-style" type="int" value="5"/>
+          <property name="last-image" type="string" value="/usr/share/backgrounds/images/default.png"/>
+        </property>
+      </property>
+    </property>
+  </property>
+  <property name="last" type="empty">
+    <property name="window-width" type="int" value="653"/>
+    <property name="window-height" type="int" value="558"/>
+  </property>
+</channel>
+EOF
+            fi
         fi
     elif [[ "$ID" == *"ubuntu"* ]]; then # Ubuntu based system
         if [[ "$VERSION_ID" == "18.04" ]] || [[ "$VERSION_ID" == "20.04" ]]; then
@@ -95,11 +164,14 @@ cat >$app_menu <<EOF
         <Separator/>
         <Filename>exo-terminal-emulator.desktop</Filename>
         <Filename>exo-file-manager.desktop</Filename>
+        <Filename>exo-web-browser.desktop</Filename>
+        <Filename>xfce4-session-logout.desktop</Filename>
     </Layout>
 
 </Menu>
 EOF
-        elif [[ "$VERSION_ID" == "22.04" ]]; then
+        elif [[ "$VERSION_ID" == "22.04" ||  "$VERSION_ID" == "24.04" ]]; then
+            xfrun_desktop="xfce4-run.desktop"
 cat >$app_menu <<EOF
 <!DOCTYPE Menu PUBLIC "-//freedesktop//DTD Menu 1.0//EN"
   "http://www.freedesktop.org/standards/menu-spec/1.0/menu.dtd">
@@ -120,16 +192,76 @@ cat >$app_menu <<EOF
         <Separator/>
         <Filename>xfce4-terminal-emulator.desktop</Filename>
         <Filename>xfce4-file-manager.desktop</Filename>
+        <Filename>xfce4-web-browser.desktop</Filename>
+        <Filename>xfce4-session-logout.desktop</Filename>
     </Layout>
 
 </Menu>
 EOF
+            if [[ "$VERSION_ID" == "24.04" ]]; then
+                mkdir -p "$HOME/.config/xfce4/xfconf/xfce-perchannel-xml"
+                cat > "$HOME/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-desktop.xml" << EOF
+<?xml version="1.0" encoding="UTF-8"?>
+
+<channel name="xfce4-desktop" version="1.0">
+  <property name="backdrop" type="empty">
+    <property name="screen0" type="empty">
+      <property name="monitorVNC-0" type="empty">
+        <property name="workspace0" type="empty">
+          <property name="color-style" type="int" value="0"/>
+          <property name="image-style" type="int" value="5"/>
+          <property name="last-image" type="string" value="/usr/share/backgrounds/images/default.png"/>
+        </property>
+        <property name="workspace1" type="empty">
+          <property name="color-style" type="int" value="0"/>
+          <property name="image-style" type="int" value="5"/>
+          <property name="last-image" type="string" value="/usr/share/backgrounds/images/default.png"/>
+        </property>
+        <property name="workspace2" type="empty">
+          <property name="color-style" type="int" value="0"/>
+          <property name="image-style" type="int" value="5"/>
+          <property name="last-image" type="string" value="/usr/share/backgrounds/images/default.png"/>
+        </property>
+        <property name="workspace3" type="empty">
+          <property name="color-style" type="int" value="0"/>
+          <property name="image-style" type="int" value="5"/>
+          <property name="last-image" type="string" value="/usr/share/backgrounds/images/default.png"/>
+        </property>
+      </property>
+    </property>
+  </property>
+  <property name="last" type="empty">
+    <property name="window-width" type="int" value="653"/>
+    <property name="window-height" type="int" value="558"/>
+  </property>
+</channel>
+EOF
+            fi
         fi
     fi
 
 fi # End desktop tuning
 
+# # Fix for firefox???
+# firefox --first-startup --headless 2>&1 &
+# FIREFOX_PID=$!
+# sleep 5
+# kill -s SIGKILL "$FIREFOX_PID"
+# wait $FIREFOX_PID
+
 tools=/usr/lib/JARVICE/tools
+
+# Set the panel
+mkdir -p "$HOME/.config/xfce4/xfconf/xfce-perchannel-xml"
+cp /usr/local/JARVICE/tools/nimbix-panel.txt "$HOME/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-panel.xml"
+
+# Firefox Default Web Browser
+cp /etc/skel/.config/xfce4/helpers.rc "$HOME/.config/xfce4/helpers.rc"
+cp /etc/skel/.config/mimeapps.list "$HOME/.config/mimeapps.list"
+
+# Add extra step to logout that stops the xvnc server
+mkdir -p "$HOME/.config/autostart"
+cp /tmp/.logout.desktop "$HOME/.config/autostart/logout.desktop"
 
 while [ 1 ]; do
 #    $tools/sbin/init $tools/bin/vncstart.sh $xinitrc

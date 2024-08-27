@@ -3,8 +3,10 @@
 set -e
 
 ARCH=$(arch)
-BRANCH=master
-TUNE_DESKTOP=true
+export ARCH=${ARCH:-x86_64}
+export BRANCH=master
+export TUNE_DESKTOP=true
+export FIX_BACKGROUND=true
 
 while [ $# -gt 0 ]; do
   case $1 in
@@ -23,6 +25,9 @@ while [ $# -gt 0 ]; do
     ;;
   --no-desktop-tuning)
     export TUNE_DESKTOP=false
+    ;;
+  --fix-background)
+    export FIX_BACKGROUND=true
     ;;
   *)
     break
@@ -54,7 +59,7 @@ echo
 sleep 1
 
   # Core packages
-  PKGS="curl zip unzip sudo"
+  PKGS="curl zip unzip sudo mousepad"
   # Source current environment
   source /etc/os-release
 
@@ -167,7 +172,7 @@ function setup_jarvice_emulation() {
     >/tmp/nimbix.zip
   unzip nimbix.zip
   rm -f nimbix.zip
-  # /tmp/jarvice-desktop-$BRANCH/setup-nimbix.sh    # not compatible with v2
+  /tmp/jarvice-desktop-$BRANCH/setup-nimbix.sh    # not compatible with v2
 
   mkdir -p /usr/local/JARVICE
   cp -a /tmp/jarvice-desktop-$BRANCH/tools /usr/local/JARVICE
@@ -212,7 +217,7 @@ function setup_nimbix_desktop() {
   elif [[ "$ID" == *"ubuntu"* ]]; then # Ubuntu based system
     files="install-ubuntu-desktop.sh"
   fi
-  files+=" prep-tiger.sh install-tiger.sh help-tiger.html postinstall-desktop.sh"
+  files+=" prep-tiger.sh install-tiger.sh help-tiger.html postinstall-desktop.sh install-panel.sh"
   files+=" nimbix_desktop url.txt xfce4-session-logout share skel.config mimeapps.list helpers.rc"
 
   # Pull the files from the install bolus
@@ -287,6 +292,13 @@ function tune_nimbix_desktop() {
       cp /usr/local/lib/nimbix_desktop/share/backgrounds/Nimix_Desktop.jpg $filename
   done
 
+  if [[ "$FIX_BACKGROUND" == "true" ]]; then
+    # This needs to be done using the default.png instead...
+    mkdir -p /usr/share/backgrounds/images
+    cp /usr/local/lib/nimbix_desktop/share/backgrounds/Nimix_Desktop.png /usr/share/backgrounds/images/default.png
+    cp /usr/local/lib/nimbix_desktop/share/backgrounds/Nimix_Desktop.jpg /usr/share/backgrounds/images/default.jpg
+  fi
+
   # Ensure no screensaver lock possible
   rm -f /etc/xdg/autostart/xfce4-screensaver.desktop
   rm -f /etc/xdg/autostart/xscreensaver.desktop
@@ -294,6 +306,8 @@ function tune_nimbix_desktop() {
 
   rm -f /usr/bin/xfce4-screensaver
   echo -e '#!/bin/sh\nexit 0' > /usr/bin/xfce4-screensaver
+
+  /usr/local/lib/nimbix_desktop/install-panel.sh
 
 }
 
