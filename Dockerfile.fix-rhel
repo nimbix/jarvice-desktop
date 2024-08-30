@@ -1,0 +1,16 @@
+ARG RHEL_VER=8
+FROM rockylinux/rockylinux:${RHEL_VER}
+
+# COPY jarvice-desktop /tmp/jarvice-desktop-master
+# RUN /tmp/jarvice-desktop-master/install-nimbix.sh --fix-background
+
+COPY nimbix.zip /tmp/jarvice-desktop/nimbix.zip
+COPY install-nimbix.sh /tmp/install-nimbix.sh
+RUN /tmp/install-nimbix.sh
+
+# Install image-common tools and desktop
+# ARG BRANCH=nimbix-menu-and-panel-fix
+# RUN dnf install -y ca-certificates wget && \
+#     curl -H 'Cache-Control: no-cache' \
+#         https://raw.githubusercontent.com/nimbix/jarvice-desktop/master/install-nimbix.sh \
+#         | bash -s -- --jarvice-desktop-branch ${BRANCH}

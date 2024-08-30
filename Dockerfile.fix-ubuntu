@@ -1,0 +1,18 @@
+ARG UBUNTU_VER="UBUNTU_VERSION"
+FROM ubuntu:${UBUNTU_VER}
+
+# COPY jarvice-desktop /tmp/jarvice-desktop-master
+# RUN /tmp/jarvice-desktop-master/install-nimbix.sh --fix-background
+
+COPY nimbix.zip /tmp/jarvice-desktop/nimbix.zip
+COPY install-nimbix.sh /tmp/install-nimbix.sh
+RUN /tmp/install-nimbix.sh
+
+# # Install image-common tools and desktop
+# # nimbix-menu-and-panel-fix
+# ARG BRANCH=master
+# RUN apt-get -y update && \
+#     DEBIAN_FRONTEND=noninteractive apt-get -y install ca-certificates curl --no-install-recommends && \
+#     curl -H 'Cache-Control: no-cache' \
+#         https://raw.githubusercontent.com/nimbix/jarvice-desktop/${BRANCH}/install-nimbix.sh \
+#         | bash -s -- --jarvice-desktop-branch ${BRANCH}
