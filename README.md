@@ -29,7 +29,7 @@ RUN apt-get -y update && \
 
 # RHEL likes
 ```bash
-RUN yum install -y ca-certificates && \
+RUN dnf install -y ca-certificates && \
     curl -H 'Cache-Control: no-cache' \
         https://raw.githubusercontent.com/nimbix/jarvice-desktop/master/install-nimbix.sh \
         | bash

@@ -6,7 +6,7 @@ ARCH=$(arch)
 if [ "$ARCH" != "x86_64" ]; then
     #build_and_install_tiger
     if [[ -f /etc/redhat-release ]]; then
-        yum -y install tigervnc-server
+        dnf -y install tigervnc-server
     else
         apt-get -y update
         apt-get -y install tigervnc-standalone-server

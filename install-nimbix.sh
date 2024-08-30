@@ -6,7 +6,8 @@ ARCH=$(arch)
 export ARCH=${ARCH:-x86_64}
 export BRANCH=master
 export TUNE_DESKTOP=true
-export FIX_BACKGROUND=true
+
+echo -e "\e[1;31mINFO: THIS IS A BETA BUILD!!!"
 
 while [ $# -gt 0 ]; do
   case $1 in
@@ -25,9 +26,6 @@ while [ $# -gt 0 ]; do
     ;;
   --no-desktop-tuning)
     export TUNE_DESKTOP=false
-    ;;
-  --fix-background)
-    export FIX_BACKGROUND=true
     ;;
   *)
     break
@@ -67,12 +65,14 @@ sleep 1
     if [ "$RIS" = true ]; then
       export RIS="--nobest"
     fi
-    if [[ "${VERSION_ID:0:1}" == "7" ]] || [[ "${VERSION_ID:0:1}" == "8" ]] || [[ "${VERSION_ID:0:1}" == "9" ]]; then # Supported EL version
+
+    RHEL_VERSIONS="8 9"
+    if [[ $RHEL_VERSIONS =~ ${VERSION_ID:0:1} ]]; then # Supported EL version
       echo -e "\e[1;33mINFO : RHEL derivated detected\e[0m"
-      yum install wget -y
+      dnf install wget -y
       if [[ "${VERSION_ID:0:1}" == "7" ]]; then
         wget https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
-        yum -y install epel-release-latest-7.noarch.rpm
+        dnf -y install epel-release-latest-7.noarch.rpm
       elif [[ "${VERSION_ID:0:1}" == "8" ]]; then
         wget https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
         dnf -y install epel-release-latest-8.noarch.rpm
@@ -87,17 +87,14 @@ sleep 1
       PKGS+=" which sshpass mailcap initscripts"
 
       # If requested by user, update system
-      [ -z "$SKIP_OS_PKG_UPDATE" ] && yum -y update
+      [ -z "$SKIP_OS_PKG_UPDATE" ] && dnf -y update
+
       # Install packages
-      if [[ "${VERSION_ID:0:1}" == "7" ]]; then
-        yum -y install $PKGS
-      elif [[ "${VERSION_ID:0:1}" == "8" ]] || [[ "${VERSION_ID:0:1}" == "9" ]]; then
-        dnf -y install $PKGS $RIS
-      fi
+      dnf -y install $PKGS $RIS
 
       # EL 8 images have locals natively manually removed !!
       # We need to force reinstall packages to ensure files are present to build locals.
-      if [[ "${VERSION_ID:0:1}" == "8" ]] || [[ "${VERSION_ID:0:1}" == "9" ]]; then
+      if [[ "8 9" =~ ${VERSION_ID:0:1} ]]; then
         dnf -y install glibc-langpack-en glibc-common glibc-locale-source gzip
         dnf -y reinstall glibc-langpack-en glibc-common glibc-locale-source gzip
       fi
@@ -116,7 +113,7 @@ sleep 1
     if [ "$RIS" = true ]; then
       export RIS="--no-install-recommends"
     fi
-    UBUNTU_VERSIONS="18.04 20.04 22.04 24.04"
+    UBUNTU_VERSIONS="20.04 22.04 24.04"
     if [[ $UBUNTU_VERSIONS =~ $VERSION_ID ]]; then
       echo -e "\e[1;33mINFO : Ubuntu derivated detected\e[0m"
 
@@ -168,10 +165,17 @@ function setup_jarvice_emulation() {
   sleep 1
 
   cd /tmp
-  curl https://codeload.github.com/nimbix/jarvice-desktop/zip/$BRANCH \
-    >/tmp/nimbix.zip
-  unzip nimbix.zip
-  rm -f nimbix.zip
+  if [ -f /tmp/nimbix.zip ]; then
+    unzip nimbix.zip
+    rm -f nimbix.zip
+    mv /tmp/jarvice-desktop /tmp/jarvice-desktop-$BRANCH
+  else
+    curl https://codeload.github.com/nimbix/jarvice-desktop/zip/$BRANCH \
+      >/tmp/nimbix.zip
+    unzip nimbix.zip
+    rm -f nimbix.zip
+  fi
+
   # /tmp/jarvice-desktop-$BRANCH/setup-nimbix.sh    # not compatible with v2
 
   mkdir -p /usr/local/JARVICE
@@ -217,7 +221,7 @@ function setup_nimbix_desktop() {
   elif [[ "$ID" == *"ubuntu"* ]]; then # Ubuntu based system
     files="install-ubuntu-desktop.sh"
   fi
-  files+=" prep-tiger.sh install-tiger.sh help-tiger.html postinstall-desktop.sh install-panel.sh"
+  files+=" prep-tiger.sh install-tiger.sh help-tiger.html postinstall-desktop.sh"
   files+=" nimbix_desktop url.txt xfce4-session-logout share skel.config mimeapps.list helpers.rc"
 
   # Pull the files from the install bolus
@@ -263,7 +267,7 @@ function cleanup() {
   sleep 1
 
   if [[ "$ID_LIKE" == *"rhel"* ]]; then # EL based system
-    yum clean all
+    dnf clean all
   elif [[ "$ID" == *"ubuntu"* ]]; then # Ubuntu based system
     apt-get clean
   fi
@@ -292,13 +296,6 @@ function tune_nimbix_desktop() {
       cp /usr/local/lib/nimbix_desktop/share/backgrounds/Nimix_Desktop.jpg $filename
   done
 
-  if [[ "$FIX_BACKGROUND" == "true" ]]; then
-    # This needs to be done using the default.png instead...
-    mkdir -p /usr/share/backgrounds/images
-    cp /usr/local/lib/nimbix_desktop/share/backgrounds/Nimix_Desktop.png /usr/share/backgrounds/images/default.png
-    cp /usr/local/lib/nimbix_desktop/share/backgrounds/Nimix_Desktop.jpg /usr/share/backgrounds/images/default.jpg
-  fi
-
   # Ensure no screensaver lock possible
   rm -f /etc/xdg/autostart/xfce4-screensaver.desktop
   rm -f /etc/xdg/autostart/xscreensaver.desktop
@@ -306,8 +303,6 @@ function tune_nimbix_desktop() {
 
   rm -f /usr/bin/xfce4-screensaver
   echo -e '#!/bin/sh\nexit 0' > /usr/bin/xfce4-screensaver
-
-  /usr/local/lib/nimbix_desktop/install-panel.sh
 
 }
 
