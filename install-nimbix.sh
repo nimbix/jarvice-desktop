@@ -165,9 +165,11 @@ function setup_jarvice_emulation() {
   sleep 1
 
   cd /tmp
-  if [ -f /tmp/nimbix.zip ]; then
+  if [ -f /tmp/jarvice-desktop/nimbix.zip ]; then # See if we are testing locally
+    cd /tmp/jarvice-desktop/
     unzip nimbix.zip
     rm -f nimbix.zip
+    cd /tmp
     mv /tmp/jarvice-desktop /tmp/jarvice-desktop-$BRANCH
   else
     curl https://codeload.github.com/nimbix/jarvice-desktop/zip/$BRANCH \
