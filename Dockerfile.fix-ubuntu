@@ -9,8 +9,8 @@ COPY install-nimbix.sh /tmp/install-nimbix.sh
 RUN /tmp/install-nimbix.sh
 
 # # Install image-common tools and desktop
-# # nimbix-menu-and-panel-fix
-# ARG BRANCH=master
+# ARG BRANCH=nimbix-menu-and-panel-fix
+# # ARG BRANCH=master
 # RUN apt-get -y update && \
 #     DEBIAN_FRONTEND=noninteractive apt-get -y install ca-certificates curl --no-install-recommends && \
 #     curl -H 'Cache-Control: no-cache' \
