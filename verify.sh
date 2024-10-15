@@ -35,5 +35,3 @@ podman run -it --rm --shm-size=16g -p 5902:5902 --entrypoint=bash "$IMAGE" -ec "
         /usr/local/bin/nimbix_desktop $PROG
     '
 "
-
-# firefox -MOZ_LOG=all:1 -MOZ_LOG_FILE=all.log

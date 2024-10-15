@@ -9,6 +9,10 @@ if [[ "$ID_LIKE" == *"rhel"* ]]; then # EL based system
     elif [[ "${VERSION_ID:0:1}" == "8" || "${VERSION_ID:0:1}" == "9" ]]; then
         /usr/local/JARVICE/tools/setup/rhel/8/fine-tune-rhel-8.sh
     fi
+    # Check is PS1 variable is available, if not set a default
+    if [[ -z $PS1 ]]; then
+        echo export "PS1=\"[\u@\h:\w]\\$ \"" >> "$HOME/.bashrc"
+    fi
 elif [[ "$ID" == *"ubuntu"* ]]; then # Ubuntu based system
     if [[ "$VERSION_ID" == "18.04" ]]; then
         /usr/local/JARVICE/tools/setup/ubuntu/18.04/fine-tune-ubuntu-18.04.sh
