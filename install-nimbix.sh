@@ -7,8 +7,6 @@ export ARCH=${ARCH:-x86_64}
 export BRANCH=master
 export TUNE_DESKTOP=true
 
-echo -e "\e[1;31mINFO: THIS IS A BETA BUILD!!!"
-
 while [ $# -gt 0 ]; do
   case $1 in
   --skip-os-pkg-update)
