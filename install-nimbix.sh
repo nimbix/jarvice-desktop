@@ -3,8 +3,11 @@
 set -e
 
 ARCH=$(arch)
-BRANCH=master
-TUNE_DESKTOP=true
+export ARCH=${ARCH:-x86_64}
+export BRANCH=master
+export TUNE_DESKTOP=true
+
+echo -e "\e[1;31mINFO: THIS IS A BETA BUILD!!!"
 
 while [ $# -gt 0 ]; do
   case $1 in
@@ -40,7 +43,7 @@ fi
 echo -e "\e[1;34m     _  _   _____   _____ ___ ___   ___  ___ ___ _  _______ ___  ___ "
 echo -e "\e[1;34m  _ | |/_\\ | _ \\ \\ / /_ _/ __| __| |   \\| __/ __| |/ /_   _/ _ \\| _ \\"
 echo -e "\e[1;34m | || / _ \\|   /\\ V / | | (__| _|  | |) | _|\\__ \\ ' <  | || (_) |  _/"
-echo -e "\e[1;34m  \\__/_/ \\_\\_|_\\ \\_/ |___\\___|___| |___/|___|___/_|\\_\\ |_| \\___/|_|  "                                                                
+echo -e "\e[1;34m  \\__/_/ \\_\\_|_\\ \\_/ |___\\___|___| |___/|___|___/_|\\_\\ |_| \\___/|_|  "
 sleep 3
 
 # Base OS
@@ -54,7 +57,7 @@ echo
 sleep 1
 
   # Core packages
-  PKGS="curl zip unzip sudo"
+  PKGS="curl zip unzip sudo mousepad"
   # Source current environment
   source /etc/os-release
 
@@ -62,16 +65,18 @@ sleep 1
     if [ "$RIS" = true ]; then
       export RIS="--nobest"
     fi
-    if [[ "${VERSION_ID:0:1}" == "7" ]] || [[ "${VERSION_ID:0:1}" == "8" ]] || [[ "${VERSION_ID:0:1}" == "9" ]]; then # Supported EL version
+
+    RHEL_VERSIONS="8 9"
+    if [[ $RHEL_VERSIONS =~ ${VERSION_ID:0:1} ]]; then # Supported EL version
       echo -e "\e[1;33mINFO : RHEL derivated detected\e[0m"
-      yum install wget -y
+      dnf install wget -y
       if [[ "${VERSION_ID:0:1}" == "7" ]]; then
         wget https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
-        yum -y install epel-release-latest-7.noarch.rpm
-      elif [[ "${VERSION_ID:0:1}" == "8" ]]; then 
+        dnf -y install epel-release-latest-7.noarch.rpm
+      elif [[ "${VERSION_ID:0:1}" == "8" ]]; then
         wget https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
         dnf -y install epel-release-latest-8.noarch.rpm
-      elif [[ "${VERSION_ID:0:1}" == "9" ]]; then 
+      elif [[ "${VERSION_ID:0:1}" == "9" ]]; then
         dnf install curl --allowerasing -y
         wget https://dl.fedoraproject.org/pub/epel/epel-release-latest-9.noarch.rpm
         dnf -y install epel-release-latest-9.noarch.rpm
@@ -82,17 +87,14 @@ sleep 1
       PKGS+=" which sshpass mailcap initscripts"
 
       # If requested by user, update system
-      [ -z "$SKIP_OS_PKG_UPDATE" ] && yum -y update
+      [ -z "$SKIP_OS_PKG_UPDATE" ] && dnf -y update
+
       # Install packages
-      if [[ "${VERSION_ID:0:1}" == "7" ]]; then
-        yum -y install $PKGS
-      elif [[ "${VERSION_ID:0:1}" == "8" ]] || [[ "${VERSION_ID:0:1}" == "9" ]]; then 
-        dnf -y install $PKGS $RIS
-      fi
+      dnf -y install $PKGS $RIS
 
       # EL 8 images have locals natively manually removed !!
       # We need to force reinstall packages to ensure files are present to build locals.
-      if [[ "${VERSION_ID:0:1}" == "8" ]] || [[ "${VERSION_ID:0:1}" == "9" ]]; then
+      if [[ "8 9" =~ ${VERSION_ID:0:1} ]]; then
         dnf -y install glibc-langpack-en glibc-common glibc-locale-source gzip
         dnf -y reinstall glibc-langpack-en glibc-common glibc-locale-source gzip
       fi
@@ -111,7 +113,8 @@ sleep 1
     if [ "$RIS" = true ]; then
       export RIS="--no-install-recommends"
     fi
-    if [[ "$VERSION_ID" == "18.04" ]] || [[ "$VERSION_ID" == "20.04" ]] || [[ "$VERSION_ID" == "22.04" ]]; then # Supported versions
+    UBUNTU_VERSIONS="20.04 22.04 24.04"
+    if [[ $UBUNTU_VERSIONS =~ $VERSION_ID ]]; then
       echo -e "\e[1;33mINFO : Ubuntu derivated detected\e[0m"
 
       # Prevent interactive packages locks
@@ -121,7 +124,9 @@ sleep 1
       PKGS+=" iptables build-essential byacc flex git cmake"
       PKGS+=" screen grep locales locales-all net-tools lsb-release"
       PKGS+=" openssh-client sshpass ca-certificates"
-      if [ "$VERSION_ID" == "20.04" ]; then
+
+      PY_IS_PY3_VER="20.04 22.04 24.04"
+      if [[ $PY_IS_PY3_VER =~ $VERSION_ID ]]; then
         PKGS+=" python-is-python3"
       fi
 
@@ -160,10 +165,19 @@ function setup_jarvice_emulation() {
   sleep 1
 
   cd /tmp
-  curl https://codeload.github.com/nimbix/jarvice-desktop/zip/$BRANCH \
-    >/tmp/nimbix.zip
-  unzip nimbix.zip
-  rm -f nimbix.zip
+  if [ -f /tmp/jarvice-desktop/nimbix.zip ]; then # See if we are testing locally
+    cd /tmp/jarvice-desktop/
+    unzip nimbix.zip
+    rm -f nimbix.zip
+    cd /tmp
+    mv /tmp/jarvice-desktop /tmp/jarvice-desktop-$BRANCH
+  else
+    curl https://codeload.github.com/nimbix/jarvice-desktop/zip/$BRANCH \
+      >/tmp/nimbix.zip
+    unzip nimbix.zip
+    rm -f nimbix.zip
+  fi
+
   # /tmp/jarvice-desktop-$BRANCH/setup-nimbix.sh    # not compatible with v2
 
   mkdir -p /usr/local/JARVICE
@@ -255,7 +269,7 @@ function cleanup() {
   sleep 1
 
   if [[ "$ID_LIKE" == *"rhel"* ]]; then # EL based system
-    yum clean all
+    dnf clean all
   elif [[ "$ID" == *"ubuntu"* ]]; then # Ubuntu based system
     apt-get clean
   fi
