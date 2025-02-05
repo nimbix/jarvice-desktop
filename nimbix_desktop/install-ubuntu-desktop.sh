@@ -25,8 +25,8 @@ apt-get -y install $PKGS $RIS
 apt-get -y remove light-locker
 
 if [ "$VERSION_ID" == "22.04" ] || [ "$VERSION_ID" == "24.04" ]; then
-    wget "https://download.mozilla.org/?product=firefox-latest-ssl&os=linux64&lang=en-US" -O firefox.tar.bz2
-    tar xjvf firefox.tar.bz2 -C /
+    wget "https://download.mozilla.org/?product=firefox-latest-ssl&os=linux64&lang=en-US" -O firefox.tar
+    tar xvf firefox.tar -C /
     mkdir -p /etc/profile.d/
     echo 'export "PATH=$PATH:/firefox"' > /etc/profile.d/firefox.sh
     rm -f firefox.tar.bz2
