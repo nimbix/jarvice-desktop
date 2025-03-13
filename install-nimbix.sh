@@ -255,6 +255,9 @@ function setup_nimbix_desktop() {
   # Add a marker file for using a local, updated noVNC install
   echo /usr/local/JARVICE/tools/noVNC | tee /etc/.novnc-stable
   chmod 777 /etc/.novnc-stable
+
+  # Add a permission setup for terminfo as we build via debian-specific env
+    ln -s /usr/share/terminfo /lib/terminfo
 }
 
 function cleanup() {
