@@ -60,21 +60,25 @@ sleep 1
   source /etc/os-release
 
   if [[ "$ID_LIKE" == *"rhel"* ]]; then # EL based system
+
+    # VERSION_ID can now be greater than 9. Need to be smarter...
+    VERSION_ID=$(echo $VERSION_ID | tr '.' ' ' | awk '{print $1}')
+
     if [ "$RIS" = true ]; then
       export RIS="--nobest"
     fi
 
     RHEL_VERSIONS="8 9"
-    if [[ $RHEL_VERSIONS =~ ${VERSION_ID:0:1} ]]; then # Supported EL version
+    if [[ $RHEL_VERSIONS =~ ${VERSION_ID} ]]; then # Supported EL version
       echo -e "\e[1;33mINFO : RHEL derivated detected\e[0m"
       dnf install wget -y
-      if [[ "${VERSION_ID:0:1}" == "7" ]]; then
+      if [[ "${VERSION_ID}" == "7" ]]; then
         wget https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
         dnf -y install epel-release-latest-7.noarch.rpm
-      elif [[ "${VERSION_ID:0:1}" == "8" ]]; then
+      elif [[ "${VERSION_ID}" == "8" ]]; then
         wget https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
         dnf -y install epel-release-latest-8.noarch.rpm
-      elif [[ "${VERSION_ID:0:1}" == "9" ]]; then
+      elif [[ "${VERSION_ID}" == "9" ]]; then
         dnf install curl --allowerasing -y
         wget https://dl.fedoraproject.org/pub/epel/epel-release-latest-9.noarch.rpm
         dnf -y install epel-release-latest-9.noarch.rpm
@@ -92,7 +96,7 @@ sleep 1
 
       # EL 8 images have locals natively manually removed !!
       # We need to force reinstall packages to ensure files are present to build locals.
-      if [[ "8 9" =~ ${VERSION_ID:0:1} ]]; then
+      if [[ "8 9" =~ ${VERSION_ID} ]]; then
         dnf -y install glibc-langpack-en glibc-common glibc-locale-source gzip
         dnf -y reinstall glibc-langpack-en glibc-common glibc-locale-source gzip
       fi
@@ -100,6 +104,33 @@ sleep 1
       localedef -i en_US -f UTF-8 en_US.UTF-8
 
       echo '# leave empty' >/etc/fstab
+    elif [[ "${VERSION_ID}" == "10" ]]; then
+      echo -e "\e[1;33mINFO : BETA RHEL derivated detected\e[0m"
+      dnf install curl wget --allowerasing -y
+      wget https://dl.fedoraproject.org/pub/epel/epel-release-latest-10.noarch.rpm
+      dnf -y install epel-release-latest-10.noarch.rpm
+
+      # Enable crb
+      crb enable
+
+      PKGS="curl zip unzip sudo" # mousepad needs to be built
+      PKGS+=" passwd xz tar file openssh-server openssh-clients python3"
+      PKGS+=" which sshpass mailcap initscripts"
+
+      # If requested by user, update system
+      [ -z "$SKIP_OS_PKG_UPDATE" ] && dnf -y update
+
+      # Install packages
+      dnf -y install $PKGS $RIS
+
+      dnf -y install glibc-langpack-en glibc-common glibc-locale-source gzip
+      dnf -y reinstall glibc-langpack-en glibc-common glibc-locale-source gzip
+
+      # Set locale
+      localedef -i en_US -f UTF-8 en_US.UTF-8
+
+      echo '# leave empty' >/etc/fstab
+
     else
       echo -e "\e[1;31mERROR: unknown or unsupported image operating system."
       echo -e "Please report to documentation to know supported Linux versions."

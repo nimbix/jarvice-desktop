@@ -4,9 +4,10 @@ source /etc/os-release
 
 # Fix the app menu
 if [[ "$ID_LIKE" == *"rhel"* ]]; then # EL based system
-    if [[ "${VERSION_ID:0:1}" == "7" ]]; then
+    VERSION_MAJOR=$(echo $VERSION_ID | tr '.' ' ' | awk '{print $1}')
+    if [[ "$VERSION_MAJOR" == "7" ]]; then
         /usr/local/JARVICE/tools/setup/rhel/7/fine-tune-rhel-7.sh
-    elif [[ "${VERSION_ID:0:1}" == "8" || "${VERSION_ID:0:1}" == "9" ]]; then
+    elif [[ "$VERSION_MAJOR" == "8" || "$VERSION_MAJOR" == "9" || "$VERSION_MAJOR" == "10" ]]; then
         /usr/local/JARVICE/tools/setup/rhel/8/fine-tune-rhel-8.sh
     fi
     # Check is PS1 variable is available, if not set a default

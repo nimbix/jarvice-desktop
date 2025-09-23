@@ -8,9 +8,12 @@ COPY nimbix.zip /tmp/jarvice-desktop/nimbix.zip
 COPY install-nimbix.sh /tmp/install-nimbix.sh
 RUN /tmp/install-nimbix.sh
 
+# # Extra dependencies that will be provided by init
+# RUN dnf install -y pciutils VirtualGL egl-utils && dnf clean all
+
 # Install image-common tools and desktop
 # ARG BRANCH=nimbix-menu-and-panel-fix
 # RUN dnf install -y ca-certificates wget && \
 #     curl -H 'Cache-Control: no-cache' \
-#         https://raw.githubusercontent.com/nimbix/jarvice-desktop/master/install-nimbix.sh \
+#         https://raw.githubusercontent.com/nimbix/jarvice-desktop/${BRANCH}/install-nimbix.sh \
 #         | bash -s -- --jarvice-desktop-branch ${BRANCH}

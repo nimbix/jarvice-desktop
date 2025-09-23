@@ -68,7 +68,9 @@ ln -sf /data Desktop
 sleep 2
 
 if [ -z "$VGL_DISPLAY" ]; then
+    # echo "DEGUB: Running with software rendering"
     exec "$@"
 else
+    # echo "DEBUG: Running with hardware rendering"
     exec vglrun -d $VGL_DISPLAY "$@"
 fi

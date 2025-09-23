@@ -1,3 +1,10 @@
 [Added Associations]
 x-scheme-handler/http=firefox.desktop
 x-scheme-handler/https=firefox.desktop
+image/bmp=org.xfce.ristretto.desktop
+image/gif=org.xfce.ristretto.desktop
+image/jpeg=org.xfce.ristretto.desktop
+image/jpg=org.xfce.ristretto.desktop
+image/pjpeg=org.xfce.ristretto.desktop
+image/png=org.xfce.ristretto.desktop
+image/tiff=org.xfce.ristretto.desktop
