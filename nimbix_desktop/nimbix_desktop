@@ -50,6 +50,12 @@ cp /etc/skel/.config/mimeapps.list "$HOME/.config/mimeapps.list"
 mkdir -p "$HOME/.config/autostart"
 cp /tmp/.logout.desktop "$HOME/.config/autostart/logout.desktop"
 
+
+export XDG_RUNTIME_DIR="$HOME/.xdg_runtime"
+mkdir -p $XDG_RUNTIME_DIR
+
+touch  "$HOME/.Xauthority"
+
 while [ 1 ]; do
 #    $tools/sbin/init $tools/bin/vncstart.sh $xinitrc
     /usr/local/JARVICE/tools/bin/vncstart.sh $xinitrc

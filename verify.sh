@@ -30,6 +30,7 @@ docker run -it --gpus=all --rm --shm-size=16g -p 5902:5902 -v $PWD:/mydata:z --d
     cp /mydata/tools/setup/fine-tune.sh /usr/local/JARVICE/tools/setup/fine-tune.sh
     cp /mydata/tools/setup/desktop.sh /usr/local/JARVICE/tools/setup/desktop.sh
     cp /mydata/nimbix_desktop/mimeapps.list /etc/skel/.config/mimeapps.list
+    cp /mydata/nimbix_desktop/nimbix_desktop /usr/local/lib/nimbix_desktop/nimbix_desktop
 
     mkdir -p /home/nimbix/
     mkdir -p /data

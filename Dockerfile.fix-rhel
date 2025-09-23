@@ -12,7 +12,7 @@ RUN /tmp/install-nimbix.sh
 # RUN dnf install -y pciutils VirtualGL egl-utils && dnf clean all
 
 # Install image-common tools and desktop
-# ARG BRANCH=nimbix-menu-and-panel-fix
+# ARG BRANCH=rhel-10
 # RUN dnf install -y ca-certificates wget && \
 #     curl -H 'Cache-Control: no-cache' \
 #         https://raw.githubusercontent.com/nimbix/jarvice-desktop/${BRANCH}/install-nimbix.sh \

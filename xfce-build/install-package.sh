@@ -44,7 +44,6 @@ if [[ -f ./meson.build ]]; then
 else
     echo "Using config build"
     ./configure --prefix=$PREFIX --enable-x11 --enable-wayland 2>&1 | tee /tmp/build-config/$package.log
-    make
-    make install
+    make -j install
 fi
 rm -rf /tmp/jarvice-desktop-master/sources/xfce/src/*

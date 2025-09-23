@@ -19,6 +19,6 @@ git clone -b "$package-$version" --recursive --depth=1 https://gitlab.xfce.org/a
 cd $package
 mkdir -p /tmp/build-config
 ./autogen.sh 2>&1 | tee /tmp/build-config/$package.log
-make install
+make -j install
 cd /tmp/jarvice-desktop-master/sources/xfce/src/
 rm -rf $package
