@@ -43,7 +43,9 @@ else
         net-tools \
         glx-utils \
         dbus-x11 \
-        btop htop
+        btop htop \
+        vulkan-loader \
+        libxkbcommon-x11
 
     dnf install -y \
         perl wget xauth adwaita-icon-theme xorg-x11-*  \
