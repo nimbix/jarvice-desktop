@@ -3,6 +3,9 @@
 set -x
 set -e
 
+# Get what version of xfce to install
+XFCE_VERSION=${1:-4.20}
+
 # Install needed dependencies
 dnf install -y epel-release
 crb enable
@@ -63,7 +66,7 @@ tumbler \
 thunar-volman"
 
 for p in $packages; do
-    $(dirname $0)/install-package.sh $p 4.20
+    $(dirname $0)/install-package.sh $p $XFCE_VERSION
 done
 
 apps="\

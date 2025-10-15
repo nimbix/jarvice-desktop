@@ -16,7 +16,8 @@ fi
 echo "Starting: $IMAGE"
 sudo modprobe vgem
 # -v /dev/dri:/dev/dri:Z
-docker run -it --gpus=all --rm --shm-size=16g -p 5902:5902 -v $PWD:/mydata:z --device=/dev/dri --entrypoint=bash "$IMAGE" -ec "
+# --device=/dev/dri
+docker run -it --gpus=all --rm --shm-size=16g -p 5902:5902 -v $PWD:/mydata:z --entrypoint=bash "$IMAGE" -ec "
     useradd --shell /bin/bash nimbix
 
     usermod -a -G video nimbix
@@ -31,6 +32,7 @@ docker run -it --gpus=all --rm --shm-size=16g -p 5902:5902 -v $PWD:/mydata:z --d
     cp /mydata/tools/setup/desktop.sh /usr/local/JARVICE/tools/setup/desktop.sh
     cp /mydata/nimbix_desktop/mimeapps.list /etc/skel/.config/mimeapps.list
     cp /mydata/nimbix_desktop/nimbix_desktop /usr/local/lib/nimbix_desktop/nimbix_desktop
+    cp /mydata/tools/bin/vncstart.sh /usr/local/JARVICE/tools/bin/vncstart.sh
 
     mkdir -p /home/nimbix/
     mkdir -p /data
@@ -67,8 +69,12 @@ docker run -it --gpus=all --rm --shm-size=16g -p 5902:5902 -v $PWD:/mydata:z --d
 
     su nimbix -c '
         cd \$HOME
-        wget "https://as2.ftcdn.net/v2/jpg/01/04/78/75/1000_F_104787586_63vz1PkylLEfSfZ08dqTnqJqlqdq0eXx.jpg"
+        wget  --no-verbose --show-progress --progress=dot:giga \
+          \"https://as2.ftcdn.net/v2/jpg/01/04/78/75/1000_F_104787586_63vz1PkylLEfSfZ08dqTnqJqlqdq0eXx.jpg\"
         # export LIBGL_DEBUG=verbose
         /usr/local/bin/nimbix_desktop $PROG
     '
 "
+
+# Can I just switch to the packaged versions???
+# Currently works on rhel 9 and 10 and ubuntu 22.04 and 24.04

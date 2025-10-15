@@ -73,14 +73,17 @@ sleep 1
       echo -e "\e[1;33mINFO : RHEL derivated detected\e[0m"
       dnf install wget -y
       if [[ "${VERSION_ID}" == "7" ]]; then
-        wget https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+        wget  --no-verbose --show-progress --progress=dot:giga \
+          https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
         dnf -y install epel-release-latest-7.noarch.rpm
       elif [[ "${VERSION_ID}" == "8" ]]; then
-        wget https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
+        wget  --no-verbose --show-progress --progress=dot:giga \
+          https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
         dnf -y install epel-release-latest-8.noarch.rpm
       elif [[ "${VERSION_ID}" == "9" ]]; then
         dnf install curl --allowerasing -y
-        wget https://dl.fedoraproject.org/pub/epel/epel-release-latest-9.noarch.rpm
+        wget  --no-verbose --show-progress --progress=dot:giga \
+          https://dl.fedoraproject.org/pub/epel/epel-release-latest-9.noarch.rpm
         dnf -y install epel-release-latest-9.noarch.rpm
       fi
 
@@ -107,7 +110,8 @@ sleep 1
     elif [[ "${VERSION_ID}" == "10" ]]; then
       echo -e "\e[1;33mINFO : BETA RHEL derivated detected\e[0m"
       dnf install curl wget --allowerasing -y
-      wget https://dl.fedoraproject.org/pub/epel/epel-release-latest-10.noarch.rpm
+      wget  --no-verbose --show-progress --progress=dot:giga \
+          https://dl.fedoraproject.org/pub/epel/epel-release-latest-10.noarch.rpm
       dnf -y install epel-release-latest-10.noarch.rpm
 
       # Enable crb

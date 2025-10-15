@@ -59,7 +59,7 @@ else
     cd /tmp/jarvice-desktop-*/xfce-build
     ./install-gtk-layer-shell.sh
     ./install-xorg-utils.sh
-    ./build-xfce.sh
+    ./build-xfce.sh 4.20
 fi
 
 dnf clean all
