@@ -41,10 +41,10 @@ else
     NOLISTEN=""
 fi
 
-vncserver -geometry "$VNC_GEOMETRY" \
-    -rfbauth /etc/JARVICE/vncpasswd $NOLISTEN \
-    -dpi 100 \
-    -SecurityTypes=VeNCrypt,TLSVnc,VncAuth :1
+export PATH=/opt/TurboVNC/bin:$PATH
+vncserver :1 -geometry "$VNC_GEOMETRY" $NOLISTEN \
+    -rfbauth /etc/JARVICE/vncpasswd \
+    -dpi 100 -wm xfce
 
 export DISPLAY=:1
 export LANG=en_US.UTF-8 # XXX

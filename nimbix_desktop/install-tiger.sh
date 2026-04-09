@@ -23,7 +23,21 @@ if [ "$ARCH" != "x86_64" ]; then
     fi
 else
     # Install the cached tarball
-    tar -C / -xzf  /usr/local/lib/nimbix_desktop/tigervnc-$VERSION.$ARCH.tar.gz --strip-components=1
+    # tar -C / -xzf  /usr/local/lib/nimbix_desktop/tigervnc-$VERSION.$ARCH.tar.gz --strip-components=1
+    # https://github.com/TurboVNC/turbovnc/releases/download/3.3/turbovnc-3.3.tar.gz
+    # tar -C / -xzf  /usr/local/lib/nimbix_desktop/turbovnc-3.3.tar.gz --strip-components=1
+
+    # Gets installed into /opt/TurboVNC/bin/
+    dnf install -y /usr/local/lib/nimbix_desktop/turbovnc*.rpm
+
+    # Install newer version of novnc
+    rm -rf /usr/local/JARVICE/tools/noVNC/*
+    cd /usr/local/JARVICE/tools/noVNC
+    curl -L https://github.com/novnc/noVNC/archive/refs/tags/v1.6.0.tar.gz | tar xz --strip-components=1 --no-same-owner
+    cd utils
+    mkdir websockify
+    cd websockify
+    curl -L https://github.com/novnc/websockify/archive/refs/tags/v0.13.0.tar.gz | tar xz --strip-components=1 --no-same-owner
 
     # Fix newer installs that put binary in /usr/libexec
 #    if [[ -x /usr/libexec/vncserver ]]; then
