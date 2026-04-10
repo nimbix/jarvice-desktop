@@ -76,7 +76,9 @@ ln -sf /data Desktop
 sleep 2
 
 if [ -z "$VGL_DISPLAY" ]; then
+    echo "Running: $@"
     exec "$@"
 else
+    echo "Running: vglrun -d $VGL_DISPLAY $@"
     exec vglrun -d $VGL_DISPLAY "$@"
 fi
