@@ -4,6 +4,12 @@
 if [ ! -x /usr/bin/vglrun ]; then
     export VGL_DISPLAY=""
 fi
+
+USE_GPU=""
+if [ -n "$VGL_DISPLAY" ]; then
+    USE_GPU="-vgl"
+fi
+
 VNC_GEOMETRY=${VNC_GEOMETRY:-1600x900}
 
 cd
@@ -42,9 +48,11 @@ else
 fi
 
 export PATH=/opt/TurboVNC/bin:$PATH
+set -x
 vncserver :1 -geometry "$VNC_GEOMETRY" $NOLISTEN \
     -rfbauth /etc/JARVICE/vncpasswd \
-    -dpi 100 -wm xfce
+    -dpi 100 -wm xfce $USE_GPU
+set +x
 
 export DISPLAY=:1
 export LANG=en_US.UTF-8 # XXX
