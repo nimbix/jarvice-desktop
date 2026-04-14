@@ -41,10 +41,22 @@ else
     NOLISTEN=""
 fi
 
-vncserver -geometry "$VNC_GEOMETRY" \
-    -rfbauth /etc/JARVICE/vncpasswd $NOLISTEN \
-    -dpi 100 \
-    -SecurityTypes=VeNCrypt,TLSVnc,VncAuth :1
+touch $HOME/.Xauthority
+# https://sourceforge.net/projects/tigervnc/files/stable/1.16.2/tigervnc-1.16.2.x86_64.tar.gz/download
+cat <<EOF > ~/.vnc/config
+geometry=1920x1080
+dpi=100
+rfbauth=/etc/JARVICE/vncpasswd
+session=xfce
+EOF
+# vncserver :1
+
+/usr/libexec/vncserver :1 2>&1 > /tmp/vnc.log &
+
+# x0vncserver -geometry "$VNC_GEOMETRY" \
+#     -rfbauth /etc/JARVICE/vncpasswd $NOLISTEN \
+#     -dpi 100 \
+#     -SecurityTypes=VeNCrypt,TLSVnc,VncAuth :1
 
 export DISPLAY=:1
 export LANG=en_US.UTF-8 # XXX

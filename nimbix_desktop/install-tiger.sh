@@ -22,8 +22,21 @@ if [ "$ARCH" != "x86_64" ]; then
         apt-get -y install tigervnc-standalone-server
     fi
 else
+    # Install newer version of novnc
+    rm -rf /usr/local/JARVICE/tools/noVNC/*
+    cd /usr/local/JARVICE/tools/noVNC
+    curl -L https://github.com/novnc/noVNC/archive/refs/tags/v1.6.0.tar.gz | tar xz --strip-components=1 --no-same-owner
+    cd utils
+    mkdir websockify
+    cd websockify
+    curl -L https://github.com/novnc/websockify/archive/refs/tags/v0.13.0.tar.gz | tar xz --strip-components=1 --no-same-owner
+
     # Install the cached tarball
-    tar -C / -xzf  /usr/local/lib/nimbix_desktop/tigervnc-$VERSION.$ARCH.tar.gz --strip-components=1
+    # tar -C / -xzf  /usr/local/lib/nimbix_desktop/tigervnc-$VERSION.$ARCH.tar.gz --strip-components=1
+    # cp -rf /usr/local/lib/nimbix_desktop/tigervnc-1.16.2.x86_64/* /.
+    # rm -rf /usr/local/lib/nimbix_desktop/tigervnc-1.16.2.x86_64
+    dnf install -y /usr/local/lib/nimbix_desktop/tigervnc-server-minimal-1.16.2-1.el8.x86_64.rpm
+    dnf install -y /usr/local/lib/nimbix_desktop/tigervnc-server-1.16.2-1.el8.x86_64.rpm
 
     # Fix newer installs that put binary in /usr/libexec
 #    if [[ -x /usr/libexec/vncserver ]]; then

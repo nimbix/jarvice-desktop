@@ -9,20 +9,25 @@ PROG="${*}"
 TUNE_DESKTOP=true
 
 # Get latest image
-IMAGE=$(podman images | grep "$DIST"-"$VER" | head -n1 | awk '{print $1 ":" $2}')
+IMAGE=$(docker images --format table | grep "$DIST"-"$VER" | head -n1 | awk '{print $1 ":" $2}')
 if [[ -z $IMAGE ]]; then
     echo "ERROR: $DIST-$VER image not found..."
     exit 1
 fi
 echo "Starting: $IMAGE"
-podman run -it --rm --shm-size=16g -p 5902:5902 --entrypoint=bash "$IMAGE" -ec "
+docker run -it --rm --shm-size=16g -p 5903:5902 -v $PWD:/mydata:z --entrypoint=bash "$IMAGE" -ec "
+
+    cp /mydata/tools/setup/panel.sh /usr/local/JARVICE/tools/setup/panel.sh
+    cp /mydata/tools/setup/fine-tune.sh /usr/local/JARVICE/tools/setup/fine-tune.sh
+    cp /mydata/tools/setup/desktop.sh /usr/local/JARVICE/tools/setup/desktop.sh
+    cp /mydata/nimbix_desktop/mimeapps.list /etc/skel/.config/mimeapps.list
+    cp /mydata/nimbix_desktop/nimbix_desktop /usr/local/lib/nimbix_desktop/nimbix_desktop
+    cp /mydata/tools/bin/vncstart.sh /usr/local/JARVICE/tools/bin/vncstart.sh
+
     useradd --shell /bin/bash nimbix
     mkdir -p /home/nimbix/
     mkdir -p /data
     mkdir -p /etc/JARVICE
-    chown -R nimbix:nimbix /home/nimbix
-    chown -R nimbix:nimbix /data
-    chown -R nimbix:nimbix /etc/JARVICE
     echo 127.0.0.1 > /etc/JARVICE/cores
     echo 127.0.0.1 >> /etc/JARVICE/cores
     echo 127.0.0.1 > /etc/JARVICE/nodes
@@ -30,8 +35,23 @@ podman run -it --rm --shm-size=16g -p 5902:5902 --entrypoint=bash "$IMAGE" -ec "
     if [ $TUNE_DESKTOP == false ]; then
         sed -i 's/tune_desktop=true/tune_desktop=false/' /usr/local/bin/nimbix_desktop
     fi
+    chown -R nimbix:nimbix /home/nimbix
+    chown -R nimbix:nimbix /data
+    chown -R nimbix:nimbix /etc/JARVICE
     su nimbix -c '
         cd \$HOME
         /usr/local/bin/nimbix_desktop $PROG
+
+        echo \"======================VNC LOG===============================\"
+        cat /home/nimbix/.vnc/*.log
+        echo \"============================================================\"
+
+        echo \"=====================NoVNC LOG==============================\"
+        cat /tmp/novnc.log
+        echo \"============================================================\"
+
+        echo \"======================VNC LOG===============================\"
+        cat /tmp/vnc.log
+        echo \"============================================================\"
     '
 "
