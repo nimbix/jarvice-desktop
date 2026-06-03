@@ -52,12 +52,19 @@ export TERM=xterm
 export VGL_READBACK=sync
 
 # Start noVNC daemon
+# Check for debug mode
+NO_VNC_VERBOSE=""
+[[ -r /data/.jarvice-debug-options.sh ]] && . /data/.jarvice-debug-options.sh
+if [[ -n $JARVICE_GRAPHICS_DEBUG && $JARVICE_GRAPHICS_DEBUG == "true" ]]; then
+    echo "DEBUG :: Enabling NoVNC verbosity"
+    NO_VNC_VERBOSE="--verbose"
+fi
 NOVNC_PATH=/usr/local/JARVICE/tools/noVNC
 pushd "$NOVNC_PATH"
 if [ -n "$NOLISTEN" ]; then
-    (utils/websockify/run --web "$NOVNC_PATH" --unix-target=/tmp/.vncsocket ${PORTNUM} | tee /tmp/novnc.log &) #2>&1 &)
+    (utils/websockify/run --web "$NOVNC_PATH" $NO_VNC_VERBOSE --unix-target=/tmp/.vncsocket ${PORTNUM} | tee /tmp/novnc.log &) #2>&1 &)
 else
-    (utils/websockify/run --web "$NOVNC_PATH" ${PORTNUM} 127.0.0.1:5901 | tee /tmp/novnc.log &) #2>&1 &)
+    (utils/websockify/run --web "$NOVNC_PATH" $NO_VNC_VERBOSE ${PORTNUM} 127.0.0.1:5901 | tee /tmp/novnc.log &) #2>&1 &)
 fi
 popd
 
