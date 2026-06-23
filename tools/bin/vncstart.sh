@@ -78,10 +78,16 @@ if [ -z "$VGL_DISPLAY" ]; then
     exec "$@"
 else
     # Overwrite init...
-    cp /opt/VirtualGL-JARVICE/lib64/libdlfaker.so /usr/lib64/.
-    cp /opt/VirtualGL-JARVICE/lib64/libgefaker.so /usr/lib64/.
-    cp /opt/VirtualGL-JARVICE/lib64/libvglfaker-nodl.so /usr/lib64/.
-    cp /opt/VirtualGL-JARVICE/lib64/libvglfaker-opencl.so /usr/lib64/.
-    cp /opt/VirtualGL-JARVICE/lib64/libvglfaker.so /usr/lib64/.
+    # cp /opt/VirtualGL-JARVICE/lib64/libdlfaker.so /usr/lib64/.
+    # cp /opt/VirtualGL-JARVICE/lib64/libgefaker.so /usr/lib64/.
+    # cp /opt/VirtualGL-JARVICE/lib64/libvglfaker-nodl.so /usr/lib64/.
+    # cp /opt/VirtualGL-JARVICE/lib64/libvglfaker-opencl.so /usr/lib64/.
+    # cp /opt/VirtualGL-JARVICE/lib64/libvglfaker.so /usr/lib64/.
+    # if [[ -z $LD_LIBRARY_PATH ]]; then
+    #     export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/opt/libjpeg-turbo/lib64:/usr/lib64/llvm17/lib:/usr/lib64:/usr/lib
+    # else
+    #     export LD_LIBRARY_PATH=/opt/libjpeg-turbo/lib64:/usr/lib64/llvm17/lib:/usr/lib64:/usr/lib
+    # fi
+    # libturbojpeg.so.0
     exec vglrun -d $VGL_DISPLAY "$@"
 fi
