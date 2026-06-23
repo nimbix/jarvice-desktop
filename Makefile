@@ -1,11 +1,11 @@
 
-OLD_DOCKER_IMAGE_RHEL_8=$(shell docker images | grep rhel-8 | awk '{print $$3}')
-OLD_DOCKER_IMAGE_RHEL_9=$(shell docker images | grep rhel-9 | awk '{print $$3}')
+OLD_DOCKER_IMAGE_RHEL_8=$(shell docker images --format table | grep rhel-8 | awk '{print $$3}')
+OLD_DOCKER_IMAGE_RHEL_9=$(shell docker images --format table | grep rhel-9 | awk '{print $$3}')
 
-OLD_DOCKER_IMAGE_UBUNTU_1804=$(shell docker images | grep ubuntu-18.04 | awk '{print $$3}')
-OLD_DOCKER_IMAGE_UBUNTU_2004=$(shell docker images | grep ubuntu-20.04 | awk '{print $$3}')
-OLD_DOCKER_IMAGE_UBUNTU_2204=$(shell docker images | grep ubuntu-22.04 | awk '{print $$3}')
-OLD_DOCKER_IMAGE_UBUNTU_2404=$(shell docker images | grep ubuntu-24.04 | awk '{print $$3}')
+OLD_DOCKER_IMAGE_UBUNTU_1804=$(shell docker images --format table | grep ubuntu-18.04 | awk '{print $$3}')
+OLD_DOCKER_IMAGE_UBUNTU_2004=$(shell docker images --format table | grep ubuntu-20.04 | awk '{print $$3}')
+OLD_DOCKER_IMAGE_UBUNTU_2204=$(shell docker images --format table | grep ubuntu-22.04 | awk '{print $$3}')
+OLD_DOCKER_IMAGE_UBUNTU_2404=$(shell docker images --format table | grep ubuntu-24.04 | awk '{print $$3}')
 
 all-fixes: all-rhel-fixes all-ubuntu-fixes
 

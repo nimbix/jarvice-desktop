@@ -77,5 +77,11 @@ sleep 2
 if [ -z "$VGL_DISPLAY" ]; then
     exec "$@"
 else
+    # Overwrite init...
+    cp /opt/VirtualGL-JARVICE/lib64/libdlfaker.so /usr/lib64/.
+    cp /opt/VirtualGL-JARVICE/lib64/libgefaker.so /usr/lib64/.
+    cp /opt/VirtualGL-JARVICE/lib64/libvglfaker-nodl.so /usr/lib64/.
+    cp /opt/VirtualGL-JARVICE/lib64/libvglfaker-opencl.so /usr/lib64/.
+    cp /opt/VirtualGL-JARVICE/lib64/libvglfaker.so /usr/lib64/.
     exec vglrun -d $VGL_DISPLAY "$@"
 fi
