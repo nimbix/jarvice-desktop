@@ -39,34 +39,7 @@ ln -sf $dirname/nimbix_desktop /usr/local/bin/nimbix_desktop
 rm -f /usr/local/bin/xfce4-session-logout
 ln -sf $dirname/xfce4-session-logout /usr/local/bin/xfce4-session-logout
 
-# dnf -y install VirtualGL
-# Install our own VirtualGL Only works for RHEL 8 libstdc++-static
-dnf install -y epel-release
-crb enable
-dnf install -y cmake nasm wget libXv-devel libX11-devel ocl-icd-devel libXext-devel libXtst-devel libGL-devel libGLU-devel libEGL-devel libxcb-devel xcb-util-keysyms-devel
-dnf group install -y "Development Tools"
-dnf install -y libjpeg-turbo-devel turbojpeg-devel
-
-# cd /opt
-# wget "https://github.com/libjpeg-turbo/libjpeg-turbo/releases/download/3.1.4.1/libjpeg-turbo-3.1.4.1.tar.gz"
-# tar xf libjpeg-turbo-3.1.4.1.tar.gz
-# rm -rf libjpeg-turbo-3.1.4.1.tar.gz
-# mkdir libjpeg-turbo-3.1.4.1/BUILD
-# cd libjpeg-turbo-3.1.4.1/BUILD
-# cmake -DENABLE_STATIC=OFF ..
-# make -j
-# make install
-
-cd /opt
-wget "https://github.com/VirtualGL/virtualgl/releases/download/3.1.4/VirtualGL-3.1.4.tar.gz"
-tar xf VirtualGL-3.1.4.tar.gz
-rm -rf VirtualGL-3.1.4.tar.gz
-mkdir VirtualGL-3.1.4/BUILD
-cd VirtualGL-3.1.4/BUILD
-# cmake -DVGL_BUILDSTATIC=OFF -DCMAKE_INSTALL_PREFIX=/opt/VirtualGL-JARVICE -DTJPEG_LIBRARY=/opt/libjpeg-turbo/lib64/libturbojpeg.so ..
-cmake -DVGL_BUILDSTATIC=OFF -DCMAKE_INSTALL_PREFIX=/opt/VirtualGL-JARVICE ..
-make -j
-make install
+$(dirname $0)/install-virtualGL.sh
 
 # VirtualGL is now provided by platform; link in the binaries that will
 # be deployed if VGL is available
