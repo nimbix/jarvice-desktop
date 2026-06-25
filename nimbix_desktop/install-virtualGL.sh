@@ -58,6 +58,12 @@ rm -rf VirtualGL-3.1.4.tar.gz
 mkdir VirtualGL-3.1.4/BUILD
 cd VirtualGL-3.1.4/BUILD
 # cmake -DVGL_BUILDSTATIC=OFF -DCMAKE_INSTALL_PREFIX=/opt/VirtualGL-JARVICE -DTJPEG_LIBRARY=/opt/libjpeg-turbo/lib64/libturbojpeg.so ..
-cmake -DVGL_BUILDSTATIC=OFF -DCMAKE_INSTALL_PREFIX=/opt/VirtualGL-JARVICE ..
+# -DCMAKE_BUILD_TYPE=Release \
+cmake \
+    -DCMAKE_C_FLAGS="-O3 -march=x86-64 -mtune=generic -fno-plt" \
+    -DCMAKE_CXX_FLAGS="-O3 -march=x86-64 -mtune=generic -fno-plt" \
+    -DVGL_BUILDSTATIC=OFF \
+    -DCMAKE_INSTALL_PREFIX=/opt/VirtualGL-JARVICE \
+    ..
 make -j
 make install

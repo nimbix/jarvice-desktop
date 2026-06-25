@@ -88,6 +88,13 @@ else
     else
         export LD_LIBRARY_PATH=/opt/libjpeg-turbo/lib64:/usr/lib64/llvm17/lib:/usr/lib64:/usr/lib
     fi
+
+    if [[ -n $JARVICE_GRAPHICS_DEBUG && $JARVICE_GRAPHICS_DEBUG == "true" ]]; then
+        echo "DEBUG :: Enabling VirtualGL verbosity"
+        export VGL_TRACE=1       # traces API calls
+        export VGL_LOGO=1        # shows VirtualGL banner (useful to confirm it's active)
+        export VGL_VERBOSE=3
+    fi
     # libturbojpeg.so.0
     exec vglrun -d $VGL_DISPLAY "$@"
 fi
