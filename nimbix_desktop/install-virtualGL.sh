@@ -50,7 +50,7 @@ cd libjpeg-turbo-3.1.4.1/BUILD
 cmake -DENABLE_STATIC=OFF -DCMAKE_INSTALL_PREFIX=/opt/libjpeg-turbo-JARVICE ..
 make -j
 make install
-for i in /opt/libjpeg-turbo-JARVICE/lib64/*.so.*; do
+for i in /opt/libjpeg-turbo-JARVICE/lib64/*.so /opt/libjpeg-turbo-JARVICE/lib64/*.so.*; do
     ln -sf $i /usr/lib64/$(basename $i)
 done
 
