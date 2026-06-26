@@ -91,6 +91,7 @@ else
 
     if [[ -n $JARVICE_GRAPHICS_DEBUG && $JARVICE_GRAPHICS_DEBUG == "true" ]]; then
         echo "DEBUG :: Enabling VirtualGL verbosity"
+        echo "DEBUG :: vglrun version -> $(vglrun --version)"
         export VGL_TRACE=1       # traces API calls
         export VGL_LOGO=1        # shows VirtualGL banner (useful to confirm it's active)
         export VGL_VERBOSE=3
