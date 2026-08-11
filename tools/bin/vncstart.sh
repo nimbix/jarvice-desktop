@@ -31,20 +31,20 @@ fi
 # assumes runtime endpoint will translate port in URL (from 5902 for example)
 PORTNUM=${JARVICE_SERVICE_PORT:-5902}
 
-# Start the Tiger server
+# Start the TurboVNC server
 if [ -n "${JARVICE_SERVICE_PORT}" ]; then
 
     # if a service port is specified, assume we are in a host network namespace
     # and don't bind TCP RFB port from Xvnc (only Unix)
-    NOLISTEN="-rfbport -1 -nolisten tcp -rfbunixpath /tmp/.vncsocket"
+    NOLISTEN="-nolisten tcp -rfbunixpath /tmp/.vncsocket"
 else
     NOLISTEN=""
 fi
 
-vncserver -geometry "$VNC_GEOMETRY" \
+/opt/TurboVNC/bin/vncserver -geometry "$VNC_GEOMETRY" \
     -rfbauth /etc/JARVICE/vncpasswd $NOLISTEN \
     -dpi 100 \
-    -SecurityTypes=VeNCrypt,TLSVnc,VncAuth :1
+    -securitytypes TLSVnc,VNC :1
 
 export DISPLAY=:1
 export LANG=en_US.UTF-8 # XXX
