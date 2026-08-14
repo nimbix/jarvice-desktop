@@ -13,6 +13,9 @@ xinitrc=/tmp/xinitrc
 cat >$xinitrc <<EOF
 #!/bin/bash -l
 
+export DISPLAY=:1
+export XAUTHORITY="$HOME/.Xauthority"
+
 if [ -x /usr/bin/xscreensaver-command ]; then
   (sleep 5; /usr/bin/xscreensaver-command -exit) &
 fi
