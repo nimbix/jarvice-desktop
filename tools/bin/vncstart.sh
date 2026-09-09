@@ -7,21 +7,8 @@ fi
 VNC_GEOMETRY=${VNC_GEOMETRY:-1600x900}
 
 cd
-
-rm -rf .vnc
-mkdir -p .vnc
-cat <<EOF >.vnc/xstartup
-#!/bin/sh
-if [ ! -z "$VGL_DISPLAY" ]; then
-        VGL_DISPLAY=$VGL_DISPLAY; export VGL_DISPLAY
-        VGL_READBACK=sync; export VGL_READBACK
-        vglclient &
-fi
-xsetroot -solid "#000050"
-xhost +
-EOF
-chmod +x .vnc/xstartup
-# chmod 775 .vnc/xstartup
+export DISPLAY=:1
+export XAUTHORITY="$HOME/.Xauthority"
 
 if [ -d /etc/X11/fontpath.d ]; then
     FP="-fp catalogue:/etc/X11/fontpath.d,built-ins"
@@ -31,25 +18,46 @@ fi
 # assumes runtime endpoint will translate port in URL (from 5902 for example)
 PORTNUM=${JARVICE_SERVICE_PORT:-5902}
 
-# Start the Tiger server
+# Start the TurboVNC server
 if [ -n "${JARVICE_SERVICE_PORT}" ]; then
 
     # if a service port is specified, assume we are in a host network namespace
     # and don't bind TCP RFB port from Xvnc (only Unix)
-    NOLISTEN="-rfbport -1 -nolisten tcp -rfbunixpath /tmp/.vncsocket"
+    NOLISTEN="-nolisten tcp -rfbunixpath /tmp/.vncsocket"
 else
     NOLISTEN=""
 fi
 
-vncserver -geometry "$VNC_GEOMETRY" \
+/opt/TurboVNC/bin/vncserver -geometry "$VNC_GEOMETRY" \
     -rfbauth /etc/JARVICE/vncpasswd $NOLISTEN \
+    -noxstartup \
     -dpi 100 \
-    -SecurityTypes=VeNCrypt,TLSVnc,VncAuth :1
+    -securitytypes TLSVnc,VNC :1
 
-export DISPLAY=:1
 export LANG=en_US.UTF-8 # XXX
 export TERM=xterm
 export VGL_READBACK=sync
+
+# Wait for the X server to be ready
+for _i in $(seq 1 15); do
+    [ -S /tmp/.X11-unix/X1 ] && [ -s "$XAUTHORITY" ] && break
+    sleep 1
+done
+if ! xset q >/dev/null 2>&1; then
+    echo "ERROR: TurboVNC display $DISPLAY is not ready" >&2
+    exit 1
+fi
+unset _i
+
+if [ -n "$VGL_DISPLAY" ]; then
+    VGL_DISPLAY=$VGL_DISPLAY
+    export VGL_DISPLAY
+    VGL_READBACK=sync
+    export VGL_READBACK
+    vglclient &
+fi
+xsetroot -solid "#000050"
+xhost +
 
 # Start noVNC daemon
 NOVNC_PATH=/usr/local/JARVICE/tools/noVNC
