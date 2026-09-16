@@ -30,7 +30,6 @@ fi
 
 /opt/TurboVNC/bin/vncserver -geometry "$VNC_GEOMETRY" \
     -rfbauth /etc/JARVICE/vncpasswd $NOLISTEN \
-    -noxstartup \
     -dpi 100 \
     -securitytypes TLSVnc,VNC :1
 
