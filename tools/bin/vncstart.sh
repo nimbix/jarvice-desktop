@@ -31,7 +31,8 @@ fi
 /opt/TurboVNC/bin/vncserver -geometry "$VNC_GEOMETRY" \
     -rfbauth /etc/JARVICE/vncpasswd $NOLISTEN \
     -dpi 100 \
-    -securitytypes TLSVnc,VNC :1
+    -securitytypes TLSVnc,VNC \
+    -xstartup "$1" :1
 
 export LANG=en_US.UTF-8 # XXX
 export TERM=xterm
@@ -77,5 +78,6 @@ sleep 2
 if [ -z "$VGL_DISPLAY" ]; then
     exec "$@"
 else
+    export VGL_VERBOSE=1
     exec vglrun -d $VGL_DISPLAY "$@"
 fi
