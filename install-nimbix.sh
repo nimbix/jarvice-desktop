@@ -221,7 +221,7 @@ function setup_nimbix_desktop() {
   elif [[ "$ID" == *"ubuntu"* ]]; then # Ubuntu based system
     files="install-ubuntu-desktop.sh"
   fi
-  files+=" prep-tiger.sh install-tiger.sh help-tiger.html postinstall-desktop.sh"
+  files+=" install-turbovnc.sh help-turbovnc.html postinstall-desktop.sh"
   files+=" nimbix_desktop url.txt xfce4-session-logout share skel.config mimeapps.list helpers.rc"
 
   # Pull the files from the install bolus
@@ -237,11 +237,8 @@ function setup_nimbix_desktop() {
     /usr/local/lib/nimbix_desktop/install-ubuntu-desktop.sh
   fi
 
-  if [[ $ARCH == x86_64 ]]; then
-    /usr/local/lib/nimbix_desktop/prep-tiger.sh
-    cp /usr/local/lib/nimbix_desktop/help-tiger.html /etc/NAE/help.html
-    /usr/local/lib/nimbix_desktop/install-tiger.sh
-  fi
+  /usr/local/lib/nimbix_desktop/install-turbovnc.sh
+  cp /usr/local/lib/nimbix_desktop/help-turbovnc.html /etc/NAE/help.html
 
   # clean up older copies, make a link for all apps to find nimbix_desktop
   rm -f /usr/lib/JARVICE/tools/nimbix_desktop

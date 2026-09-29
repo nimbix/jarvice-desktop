@@ -12,7 +12,7 @@ if [[ "8 9" =~ ${VERSION_ID:0:1} ]]; then
     dnf install dnf-plugins-core -y
     if [[ "${VERSION_ID:0:1}" == "8" ]]; then
         dnf config-manager --set-enabled powertools
-        dnf install -y xorg-x11-apps pygtk2
+        dnf install -y xorg-x11-apps pygtk2 mesa-dri-drivers
     elif [[ "${VERSION_ID:0:1}" == "9" ]]; then
         dnf config-manager --set-enabled crb
         dnf install dbus-x11 xwd -y
